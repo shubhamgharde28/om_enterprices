@@ -78,8 +78,8 @@ function Contact() {
           <div className="ct-hero-copy">
             <p className="ct-eyebrow">LET&apos;S TALK WATER</p>
             <h1 className="ct-hero-title">
-              Better water starts
-              <span>with a <em>conversation.</em></span>
+              Water care
+              <span>starts <em>here.</em></span>
             </h1>
             <p className="ct-hero-text">
               Have questions about our products, services or need help with your existing system?
