@@ -409,7 +409,7 @@
 .home-hero-promise > p {
   margin: 0;
   color: #58748d;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.5;
 }
 
@@ -1105,6 +1105,25 @@
   font-size: 10px;
 }
 
+@media (max-width: 640px) {
+  .services-page .services-page-card-title {
+    margin-bottom: 0;
+    font-size: 20px;
+  }
+
+  .services-page .services-page-card-price {
+    font-size: 20px;
+  }
+
+  .services-page .services-page-card-timing {
+    font-size: 12px;
+  }
+
+  .services-page .services-page-card .chakra-button {
+    font-size: 12px;
+  }
+}
+
 .about-page {
   --chakra-colors-blue-50: #eaf6fc;
   --chakra-colors-blue-100: #eaf6fc;
@@ -1231,6 +1250,22 @@
   .about-page .about-trust-item > div {
     min-width: 0;
   }
+
+  .about-page .about-trust-item p:first-child {
+    font-size: 14px;
+  }
+
+  .about-page .about-trust-item p:last-child {
+    font-size: 12px;
+  }
+
+  .about-page .about-stats-grid .about-stat-value {
+    font-size: 14px;
+  }
+
+  .about-page .about-stats-grid .about-stat-value + p {
+    font-size: 12px;
+  }
 }
 
 .about-page .home-cta-section.about-page-cta {
@@ -1268,11 +1303,11 @@
 
 @media (max-width: 640px) {
   .services-page .chakra-button {
-    font-size: 10px;
+    font-size: 12px;
   }
 
   .about-page .about-page-button {
-    font-size: 10px;
+    font-size: 12px;
   }
 
   .home-services-showcase-grid.services-page-grid {
@@ -1872,6 +1907,10 @@
   margin-top: 3px;
   color: var(--home-muted);
   font-size: 11px;
+}
+
+.about-page .about-testimonial-list {
+  width: 100%;
 }
 
 .home-testimonial-dots {
@@ -3482,12 +3521,48 @@
   }
 
   .home-footer-brand h2 {
-    font-size: 17px;
+    font-size: 20px;
   }
 
   .home-footer-brand > p {
     max-width: 360px;
-    font-size: 11px;
+    font-size: 12px;
+  }
+
+  .home-footer-links > strong {
+    font-size: 20px;
+  }
+
+  .home-footer-links > a {
+    font-size: 12px;
+  }
+
+  .home-footer-contact > strong {
+    font-size: 20px;
+  }
+
+  .home-footer-follow > strong {
+    font-size: 20px;
+  }
+
+  .home-footer-newsletter b {
+    font-size: 14px;
+  }
+
+  .home-footer-newsletter p {
+    font-size: 12px;
+  }
+
+  .home-footer-email-field {
+    font-size: 12px;
+  }
+
+  .home-footer-contact b {
+    font-size: 14px;
+  }
+
+  .home-footer-contact small {
+    font-size: 12px;
   }
 
   .home-footer-values {
@@ -3505,11 +3580,11 @@
   }
 
   .home-footer-values strong {
-    font-size: 9px;
+    font-size: 14px;
   }
 
   .home-footer-values small {
-    font-size: 8px;
+    font-size: 12px;
   }
 
   .home-footer-links,
@@ -3541,6 +3616,10 @@
     gap: 14px;
   }
 
+  .home-copyright {
+    font-size: 12px;
+  }
+
   .home-footer-trust {
     width: 100%;
     justify-content: space-between;
@@ -3563,11 +3642,11 @@
   }
 
   .home-footer-trust b {
-    font-size: 8px;
+    font-size: 12px;
   }
 
   .home-footer-trust small {
-    font-size: 8px;
+    font-size: 12px;
   }
 }
 
@@ -3888,7 +3967,7 @@
 
   .home-hero-promise > span {
     color: #3286bd;
-    font-size: 8px;
+    font-size: 12px;
     font-weight: 800;
     letter-spacing: 0.16em;
   }
@@ -3901,17 +3980,18 @@
     line-height: 1.2;
   }
 
+  .home-hero-promise > strong {
+    font-size: 16px;
+  }
+
   .home-hero-promise > p {
-    margin: 0;
-    color: #58748d;
-    font-size: 10px;
-    line-height: 1.45;
+    font-size: 12px;
   }
 
   .water-home .home-hero .home-button {
     min-height: 40px;
     padding: 0 10px;
-    font-size: 10px;
+    font-size: 14px;
     white-space: nowrap;
   }
 
@@ -3987,13 +4067,14 @@
   .home-hero-benefits strong {
     max-width: 78px;
     min-height: 22px;
+    font-size: 14px;
   }
 
   .home-hero-benefits small {
     display: block;
     max-width: 78px;
     margin-top: 4px;
-    font-size: 8px;
+    font-size: 12px;
     line-height: 1.3;
   }
 }
@@ -4021,6 +4102,15 @@
 
   .home-services-showcase-heading > .home-eyebrow {
     margin-bottom: 0;
+    font-size: 12px;
+  }
+
+  .home-services-showcase-heading > p:last-child {
+    font-size: 12px;
+  }
+
+  .home-products-title > .home-eyebrow {
+    font-size: 12px;
   }
 
   .home-services-showcase-heading h2,
@@ -4042,8 +4132,12 @@
     text-align: center;
   }
 
-  .home-products-title h2 {
+  .services-page .services-page-heading h1 {
     font-size: 44px;
+  }
+
+  .home-products-title h2 {
+    font-size: 23px;
   }
 
   .home-service-intro h2 {
@@ -4062,6 +4156,14 @@
   .home-services-showcase-heading h2 span,
   .home-products-title h2 span {
     color: inherit;
+  }
+
+  .home-services-showcase-heading h2 span {
+    color: #248bdd;
+  }
+
+  .home-products-title h2 span {
+    color: #278add;
   }
 }
 
@@ -5023,15 +5125,19 @@
   .home-drawer-links > a > span {
     width: 34px;
     height: 34px;
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .home-drawer-links > a > strong {
     font-size: 14px;
   }
 
+  .home-header .home-tablet-drawer .home-drawer-links > a > strong {
+    font-size: 14px;
+  }
+
   .home-drawer-links > a > svg {
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .home-drawer-links > a.is-active::before {
@@ -5535,6 +5641,54 @@
 }
 
 @media (max-width: 640px) {
+  .home-header .home-header-notifications button[aria-label^="Notifications"] > svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  .home-header .home-switch-solar {
+    font-size: 12px;
+  }
+
+  .home-header .home-tablet-drawer .home-drawer-contact h2 {
+    font-size: 14px;
+  }
+
+  .home-header .home-tablet-drawer .home-drawer-social > strong {
+    font-size: 14px;
+  }
+
+  .home-header .home-tablet-drawer .home-drawer-copyright {
+    font-size: 12px;
+  }
+
+  .home-header .home-tablet-drawer .home-drawer-contact strong {
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .home-header .home-tablet-drawer .home-drawer-contact small {
+    font-size: 12px;
+  }
+
+  .home-header .home-tablet-drawer .home-drawer-promo-copy strong {
+    font-size: 14px;
+  }
+
+  .home-header .home-tablet-drawer .home-drawer-promo-copy small {
+    font-size: 12px;
+  }
+
+  .water-home .home-service-showcase-card {
+    min-height: 124px;
+    grid-template-columns: 100px minmax(0, 1fr);
+  }
+
+  .water-home .home-service-showcase-image {
+    width: 100px;
+    height: 100px;
+  }
+
   .water-home .home-button,
   .water-home .home-services-showcase-link,
   .water-home .home-service-showcase-book,
@@ -5542,32 +5696,262 @@
   .water-home .home-product-feature-cta,
   .water-home .home-product-peek-cta,
   .water-home button:not(.home-mobile-menu):not(.home-drawer-close):not(.home-drawer-backdrop):not(.home-product-carousel-arrow):not(.home-product-carousel-dots button) {
+    font-size: 12px;
+  }
+
+  .water-home .home-service-intro > .home-eyebrow {
+    font-size: 12px;
+  }
+
+  .water-home .home-service-intro > p:not(.home-eyebrow) {
+    font-size: 12px;
+  }
+
+  .water-home .home-trust-copy {
+    text-align: center;
+  }
+
+  .water-home .home-trust-copy > .home-eyebrow {
+    font-size: 12px;
+  }
+
+  .water-home .home-trust-copy > p:not(.home-eyebrow) {
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 12px;
+  }
+
+  .water-home .home-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 12px;
+  }
+
+  .water-home .home-stat {
+    gap: 4px;
+    padding: 0 6px;
+    border-right: 0;
+  }
+
+  .water-home .home-stat:nth-child(odd) {
+    border-right: 1px solid #dceaf2;
+  }
+
+  .water-home .home-stat:first-child {
+    padding-left: 6px;
+  }
+
+  .water-home .home-stat:last-child {
+    padding-right: 6px;
+  }
+
+  .water-home .home-stat strong {
+    font-size: 14px;
+  }
+
+  .water-home .home-stat small {
+    font-size: 12px;
+  }
+
+  .water-home .home-service-card h3 {
+    font-size: 14px;
+  }
+
+  .water-home .home-service-card p {
+    font-size: 12px;
+  }
+
+  .water-home .home-how-section .home-centered-heading > p:last-child {
+    font-size: 12px;
+  }
+
+  .water-home .home-how-section .home-step-card h3 {
+    font-size: 14px;
+  }
+
+  .water-home .home-how-section .home-step-card p {
+    font-size: 12px;
+  }
+
+  .water-home .home-testimonials-section .home-centered-heading > .home-eyebrow {
+    font-size: 12px;
+  }
+
+  .water-home .home-testimonials-section .home-centered-heading > p:last-child {
+    font-size: 12px;
+  }
+
+  .water-home .home-testimonial-card p {
+    font-size: 12px;
+  }
+
+  .water-home .home-testimonial-card strong {
+    font-size: 14px;
+  }
+
+  .water-home .home-testimonial-card small {
+    font-size: 12px;
+  }
+
+  .water-home .home-cta-section h2 {
+    font-size: 12px;
+  }
+
+  .water-home .home-cta-section p {
     font-size: 10px;
+  }
+
+  .water-home .home-product-feature-description {
+    font-size: 12px;
+  }
+
+  .water-home .home-product-feature-type {
+    font-size: 12px;
+  }
+
+  .water-home .home-product-feature-specs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 8px;
+  }
+
+  .water-home .home-product-feature-specs > div {
+    min-height: 74px;
+    justify-content: flex-start;
+    gap: 5px;
+    padding: 8px 4px;
+  }
+
+  .water-home .home-product-feature-specs > div + div {
+    border-left: 0;
+  }
+
+  .water-home .home-product-feature-specs > div:nth-child(even) {
+    border-left: 1px solid #e7eff5;
+  }
+
+  .water-home .home-product-feature-specs > div:nth-child(n + 3) {
+    border-top: 1px solid #e7eff5;
+  }
+
+  .water-home .home-product-feature-specs small {
+    font-size: 12px;
+    line-height: 1.35;
+  }
+
+  .water-home .home-product-feature-price strong {
+    font-size: 20px;
+  }
+
+  .water-home .home-product-feature-price del,
+  .water-home .home-product-feature-price > span {
+    font-size: 12px;
   }
 
   .water-home .home-hero .home-button {
-    font-size: 10px;
+    font-size: 12px;
   }
 
-  .home-products-title h2 {
-    font-size: clamp(33px, 10vw, 42px);
+  .water-home .home-products-title > .home-eyebrow {
+    font-size: 12px;
   }
 
-  .home-products-title > p:last-child {
-    font-size: 11px;
+  .water-home .home-products-title h2 {
+    font-size: 23px;
+  }
+
+  .water-home .home-products-title h2 span {
+    color: #278add;
+  }
+
+  .water-home .home-products-title > p:last-child {
+    font-size: 12px;
+  }
+
+  .water-home .home-featured-copy > .home-eyebrow,
+  .water-home .home-featured-tagline,
+  .water-home .home-featured-description,
+  .water-home .home-product-points {
+    font-size: 12px;
+  }
+
+  .water-home .home-price-line strong {
+    font-size: 20px;
+  }
+
+  .water-home .home-price-line del,
+  .water-home .home-price-line > span {
+    font-size: 12px;
+  }
+
+  .water-home .home-featured-copy > .home-button {
+    font-size: 12px;
+  }
+
+  .home-product-values {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 14px;
+  }
+
+  .home-product-value {
+    min-height: 96px;
+    justify-content: flex-start;
+    gap: 5px;
+    padding: 0 8px;
+  }
+
+  .home-product-value:nth-child(odd) {
+    border-left: 0;
+  }
+
+  .home-product-value:nth-child(even) {
+    border-left: 1px solid #e2edf5;
   }
 
   .home-product-value strong {
-    font-size: 9px;
+    display: flex;
+    min-height: 18px;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
   }
 
-  .home-product-value small,
-  .home-service-assurance small {
-    font-size: 8px;
+  .home-product-value small {
+    display: flex;
+    min-height: 30px;
+    align-items: flex-start;
+    justify-content: center;
+    font-size: 12px;
   }
 
   .home-service-assurance strong {
-    font-size: 9px;
+    font-size: 14px;
+  }
+
+  .home-service-assurance small {
+    font-size: 12px;
+  }
+
+  .water-home .home-service-showcase-copy h3 {
+    font-size: 14px;
+  }
+
+  .water-home .home-service-showcase-copy > p {
+    font-size: 12px;
+  }
+
+  .water-home .home-service-showcase-meta strong {
+    font-size: 14px;
+  }
+
+  .water-home .home-service-showcase-meta span {
+    font-size: 12px;
+  }
+
+  .water-home .home-service-showcase-copy .home-service-showcase-book {
+    font-size: 12px;
+  }
+
+  .water-home .home-services-showcase-link {
+    font-size: 12px;
   }
 
   .home-service-intro h2,
@@ -5577,11 +5961,136 @@
     font-size: 23px;
   }
 
-  .about-page h1.chakra-heading {
-    font-size: 42px;
+  .about-page .about-eyebrow {
+    font-size: 12px;
+  }
+
+  .about-page h1.chakra-heading,
+  .about-page .about-page-title {
+    font-size: 44px;
   }
 
   .about-page h2.chakra-heading {
     font-size: 25px;
+  }
+
+  .about-page h2.chakra-heading.about-story-title {
+    font-size: 23px;
+  }
+
+  .about-page h2.chakra-heading.about-mission-vision-title {
+    font-size: 23px;
+  }
+
+  .about-page h2.chakra-heading.about-values-title {
+    font-size: 23px !important;
+  }
+
+  .about-page h2.chakra-heading.about-mobile-heading-23 {
+    font-size: 23px !important;
+  }
+
+  .about-page h3.chakra-heading.about-value-card-title {
+    font-size: 14px !important;
+    text-align: center;
+  }
+
+  .about-page h3.chakra-heading.about-offering-card-title {
+    font-size: 14px !important;
+  }
+
+  .about-page .about-offering-card-description {
+    font-size: 12px !important;
+  }
+
+  .about-page .about-why-card-title {
+    font-size: 14px !important;
+  }
+
+  .about-page .about-why-card-description {
+    font-size: 12px !important;
+  }
+
+  .about-page .about-milestone-year {
+    font-size: 14px !important;
+  }
+
+  .about-page .about-milestone-title {
+    font-size: 14px !important;
+  }
+
+  .about-page .about-milestone-description {
+    font-size: 12px !important;
+  }
+
+  .about-page .about-step-title {
+    font-size: 14px !important;
+  }
+
+  .about-page .about-step-description {
+    font-size: 12px !important;
+  }
+
+  .about-page .about-commitment-title {
+    font-size: 14px !important;
+    text-align: center;
+  }
+
+  .about-page .about-commitment-description {
+    font-size: 12px !important;
+    text-align: center;
+  }
+
+  .about-page .about-commitment-icon {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .about-page .about-testimonial-stars,
+  .about-page .about-testimonial-author {
+    justify-content: center;
+  }
+
+  .about-page .about-testimonial-review,
+  .about-page .about-testimonial-name,
+  .about-page .about-testimonial-date {
+    text-align: center;
+  }
+
+  .about-page .about-testimonial-review,
+  .about-page .about-testimonial-date {
+    font-size: 12px;
+  }
+
+  .about-page .about-testimonial-name {
+    font-size: 14px !important;
+  }
+
+  .about-page .about-faq-question {
+    font-size: 14px !important;
+  }
+
+  .about-page .about-faq-answer {
+    font-size: 12px !important;
+  }
+
+  .about-page .about-value-icon {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .about-page .about-mission-vision-card {
+    align-items: center;
+    text-align: center;
+  }
+
+  .about-page .about-mission-vision-card .about-mission-vision-icon {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .about-page h3.chakra-heading.about-mission-vision-card-title {
+    font-size: 14px !important;
+    text-align: center;
   }
 }

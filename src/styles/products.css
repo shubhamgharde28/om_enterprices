@@ -230,9 +230,9 @@
   }
   .pr-hero-inner { width: 100%; text-align: center; }
   .pr-hero::after { background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.6) 55%, rgba(255, 255, 255, 0.05) 100%); }
-  .pr-hero h1 { font-size: 26px; }
-  .pr-hero-text { max-width: 300px; margin: 0 auto; font-size: 12.5px; }
-  .pr-eyebrow { font-size: 10px; }
+  .pr-hero h1 { font-size: 44px; }
+  .pr-hero-text { max-width: 300px; margin: 0 auto; font-size: 12px; }
+  .pr-eyebrow { font-size: 12px; }
 
   .pr-filters { grid-template-columns: 1fr auto; gap: 10px; }
   .pr-search { grid-column: 1 / -1; }
@@ -273,26 +273,29 @@
   }
   .pr-card-image { height: 190px; }
   .pr-card-body { padding: 14px 4px 0; }
-  .pr-card h3 { font-size: 14px; margin: 8px 0 5px; }
+  .pr-card h3 { font-size: 20px; margin: 8px 0 5px; }
   .pr-card-desc { font-size: 12px; line-height: 1.5; }
   .pr-rating { margin-top: 10px; font-size: 12px; }
   .pr-rating svg { font-size: 13px; }
   .pr-price-row { padding-top: 16px; gap: 8px; }
-  .pr-price-row strong { font-size: 18px; }
-  .pr-price-row s { font-size: 11px; }
-  .pr-off { padding: 3px 9px; font-size: 10px; }
-  .pr-badge { font-size: 9px; padding: 4px 9px; }
+  .pr-price-row strong { font-size: 20px; }
+  .pr-price-row s { font-size: 12px; }
+  .pr-off { padding: 3px 9px; font-size: 12px; }
+  .pr-badge { font-size: 12px; padding: 4px 9px; }
   .pr-card-btn { margin: 14px 4px 0; height: 42px; font-size: 13px; }
 
   .pr-trust { margin-top: 22px; padding: 16px 4px; border-radius: 10px; }
   .pr-trust > div { flex-direction: column; gap: 6px; padding: 0 6px; text-align: center; }
   .pr-trust-icon { width: 32px; height: 32px; font-size: 14px; }
-  .pr-trust strong { font-size: 10.5px; }
-  .pr-trust small { font-size: 9px; }
+  .pr-trust strong { font-size: 14px; }
+  .pr-trust small { font-size: 12px; }
 
-  .pr-page .pr-filter-btn,
   .pr-page .pr-filter-drawer-actions button,
   .pr-page .pr-card-btn {
-    font-size: 10px;
+    font-size: 12px;
+  }
+
+  .pr-page .pr-filter-btn {
+    font-size: 12px;
   }
 }

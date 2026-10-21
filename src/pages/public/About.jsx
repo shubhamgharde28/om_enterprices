@@ -161,8 +161,8 @@ const SectionHeader = ({ eyebrow, title, highlight, text, align = 'center', maxW
   </Box>
 )
 
-const IconCircle = ({ icon, size = 12 }) => (
-  <Flex w={size} h={size} borderRadius="full" bg="blue.50" color="blue.500" align="center" justify="center" flexShrink={0}>
+const IconCircle = ({ icon, size = 12, className }) => (
+  <Flex className={className} w={size} h={size} borderRadius="full" bg="blue.50" color="blue.500" align="center" justify="center" flexShrink={0}>
     <Icon as={icon} boxSize={`${size * 1.8}px`} />
   </Flex>
 )
@@ -248,7 +248,7 @@ function About() {
       {/* 2. STATS */}
       <Section>
         <Card p={{ base: 4, md: 8 }}>
-          <SimpleGrid columns={{ base: 2, md: 4 }} spacing={0}>
+          <SimpleGrid className="about-stats-grid" columns={{ base: 2, md: 4 }} spacing={0}>
             {stats.map((s, i) => (
               <Flex key={s.label} direction="column" align="center" textAlign="center" py={{ base: 4, md: 2 }} px={2}
                     borderLeftWidth={{ base: i % 2 ? '1px' : 0, md: i ? '1px' : 0 }}
@@ -293,12 +293,12 @@ function About() {
 
       {/* 4. MISSION & VISION */}
       <Section bg="#F3F9FE">
-        <SectionHeader eyebrow="Purpose" title="What drives" highlight="everything we do" />
+        <SectionHeader eyebrow="Purpose" title="What drives" highlight="everything we do" titleClassName="about-mission-vision-title" />
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
           {missionVision.map((m) => (
-            <Card key={m.title} p={{ base: 6, md: 9 }}>
-              <IconCircle icon={m.icon} size={14} />
-              <Heading as="h3" fontSize="xl" color={NAVY} mt={5} mb={3}>{m.title}</Heading>
+            <Card className="about-mission-vision-card" key={m.title} p={{ base: 6, md: 9 }}>
+              <IconCircle className="about-mission-vision-icon" icon={m.icon} size={14} />
+              <Heading className="about-mission-vision-card-title" as="h3" fontSize={{ base: '14px', md: 'xl' }} color={NAVY} mt={5} mb={3}>{m.title}</Heading>
               <Text color="gray.600">{m.text}</Text>
             </Card>
           ))}
@@ -308,12 +308,13 @@ function About() {
       {/* 5. CORE VALUES */}
       <Section>
         <SectionHeader eyebrow="Our Values" title="The principles behind" highlight="every purifier we serve"
+                       titleClassName="about-values-title"
                        text="These values shape how we sell, install, repair and care for your water purifier." />
         <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} spacing={5}>
           {values.map((v) => (
-            <Card key={v.title}>
-              <IconCircle icon={v.icon} />
-              <Heading as="h3" fontSize="md" color={NAVY} mt={4} mb={2}>{v.title}</Heading>
+            <Card className="about-value-card" key={v.title}>
+              <IconCircle className="about-value-icon" icon={v.icon} />
+              <Heading className="about-value-card-title" as="h3" fontSize="md" color={NAVY} mt={4} mb={2}>{v.title}</Heading>
               <Text fontSize="sm" color="gray.500">{v.text}</Text>
             </Card>
           ))}
@@ -323,14 +324,15 @@ function About() {
       {/* 6. WHAT WE DO */}
       <Section bg="#F3F9FE">
         <SectionHeader eyebrow="What We Do" title="Complete care for" highlight="your water purifier"
+                       titleClassName="about-mobile-heading-23"
                        text="From choosing the right system to keeping it running for years." />
         <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} spacing={5}>
           {offerings.map((o) => (
             <Card className="about-offering-card" key={o.title} textAlign="center">
               <Image className="about-offering-image" src={o.image} alt={o.title} loading="lazy" />
               <Flex justify="center"><IconCircle icon={o.icon} size={14} /></Flex>
-              <Heading as="h3" fontSize="md" color={NAVY} mt={4} mb={2}>{o.title}</Heading>
-              <Text fontSize="sm" color="gray.500">{o.text}</Text>
+              <Heading className="about-offering-card-title" as="h3" fontSize="md" color={NAVY} mt={4} mb={2}>{o.title}</Heading>
+              <Text className="about-offering-card-description" fontSize="sm" color="gray.500">{o.text}</Text>
             </Card>
           ))}
         </SimpleGrid>
@@ -344,7 +346,8 @@ function About() {
 
       {/* 7. JOURNEY TIMELINE */}
       <Section>
-        <SectionHeader eyebrow="Our Journey" title="A decade of" highlight="growing together" />
+        <SectionHeader eyebrow="Our Journey" title="A decade of" highlight="growing together"
+                       titleClassName="about-mobile-heading-23" />
         <Box position="relative" maxW="760px" mx="auto">
           <Box position="absolute" left={{ base: '19px', md: '50%' }} top={0} bottom={0} w="2px" bg="blue.100"
                transform={{ md: 'translateX(-1px)' }} />
@@ -360,10 +363,10 @@ function About() {
                 <Box position="absolute" left={{ base: '12px', md: '50%' }} top="6px" w="16px" h="16px" borderRadius="full"
                      bg="white" borderWidth="4px" borderColor={BLUE} transform={{ md: 'translateX(-50%)' }} />
                 <Box ml={{ base: 12, md: 0 }} w={{ base: 'auto', md: '50%' }} pl={{ md: left ? 10 : 0 }} pr={{ md: left ? 0 : 10 }}>
-                  <Text display={{ md: 'none' }} fontSize="lg" fontWeight="800" color={BLUE}>{m.year}</Text>
-                  <Card p={4}>
-                    <Text fontWeight="700" color={NAVY} mb={1}>{m.title}</Text>
-                    <Text fontSize="sm" color="gray.500">{m.text}</Text>
+                  <Text className="about-milestone-year" display={{ md: 'none' }} fontSize="lg" fontWeight="800" color={BLUE}>{m.year}</Text>
+                  <Card className="about-milestone-card" p={4}>
+                    <Text className="about-milestone-title" fontWeight="700" color={NAVY} mb={1}>{m.title}</Text>
+                    <Text className="about-milestone-description" fontSize="sm" color="gray.500">{m.text}</Text>
                   </Card>
                 </Box>
               </Flex>
@@ -378,15 +381,16 @@ function About() {
           <Box>
             <SectionHeader align="left" eyebrow="Why Choose OM Enterprises" title="More than just"
                            highlight="a water purifier"
+                           titleClassName="about-mobile-heading-23"
                            text="We’re committed to delivering clean water, reliable service and complete customer satisfaction." />
             <SimpleGrid columns={{ base: 1, sm: 2 }} spacing={4}>
               {whyList.map((w) => (
-                <Card key={w.title} p={4}>
+                <Card className="about-why-card" key={w.title} p={4}>
                   <Flex gap={3}>
                     <IconCircle icon={w.icon} size={10} />
                     <Box>
-                      <Text fontSize="sm" fontWeight="700" color={NAVY}>{w.title}</Text>
-                      <Text fontSize="xs" color="gray.500" mt={1}>{w.text}</Text>
+                      <Text className="about-why-card-title" fontSize="sm" fontWeight="700" color={NAVY}>{w.title}</Text>
+                      <Text className="about-why-card-description" fontSize="xs" color="gray.500" mt={1}>{w.text}</Text>
                     </Box>
                   </Flex>
                 </Card>
@@ -399,7 +403,8 @@ function About() {
 
       {/* 9. HOW WE WORK */}
       <Section>
-        <SectionHeader eyebrow="How It Works" title="Getting pure water is" highlight="simple and hassle-free" />
+        <SectionHeader eyebrow="How It Works" title="Getting pure water is" highlight="simple and hassle-free"
+                       titleClassName="about-mobile-heading-23" />
         <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} spacing={5}>
           {steps.map((s, i) => (
             <Card key={s.title} position="relative">
@@ -408,8 +413,8 @@ function About() {
                 <Flex w={7} h={7} borderRadius="full" bg={NAVY} color="white" fontSize="xs" fontWeight="700"
                       align="center" justify="center">{i + 1}</Flex>
               </Flex>
-              <Text fontWeight="700" color={NAVY} mb={1}>{s.title}</Text>
-              <Text fontSize="sm" color="gray.500">{s.text}</Text>
+              <Text className="about-step-title" fontWeight="700" color={NAVY} mb={1}>{s.title}</Text>
+              <Text className="about-step-description" fontSize="sm" color="gray.500">{s.text}</Text>
             </Card>
           ))}
         </SimpleGrid>
@@ -418,38 +423,46 @@ function About() {
       {/* 10. CUSTOMER COMMITMENTS */}
       <Section bg="#F3F9FE">
         <SectionHeader eyebrow="Our Commitment" title="Water care you can" highlight="count on"
+                       titleClassName="about-mobile-heading-23"
                        text="From choosing a purifier to keeping it in good condition, we make support clear and dependable." />
         <SimpleGrid columns={{ base: 1, md: 3 }} spacing={5}>
           {customerCommitments.map((commitment) => (
-            <Card key={commitment.title}>
-              <IconCircle icon={commitment.icon} size={12} />
-              <Text mt={4} fontWeight="700" color={NAVY}>{commitment.title}</Text>
-              <Text fontSize="sm" color="gray.500" mt={2}>{commitment.text}</Text>
+            <Card className="about-commitment-card" key={commitment.title}>
+              <IconCircle className="about-commitment-icon" icon={commitment.icon} size={12} />
+              <Text className="about-commitment-title" mt={4} fontWeight="700" color={NAVY}>{commitment.title}</Text>
+              <Text className="about-commitment-description" fontSize="sm" color="gray.500" mt={2}>{commitment.text}</Text>
             </Card>
           ))}
         </SimpleGrid>
       </Section>
 
       {/* 11. TESTIMONIALS */}
-      <Section>
+      <Section className="about-testimonials-section">
         <SectionHeader eyebrow="Testimonials" title="What our" highlight="customers say"
+                       titleClassName="about-mobile-heading-23"
                        text="Real people. Real experiences. Trusted by thousands." />
-        <SimpleGrid columns={{ base: 1, md: 3 }} spacing={5}>
-          {mockTestimonials.map((t) => (
-            <Card key={t.id}>
-              <Flex gap={1} color="yellow.400" mb={3}>
-                {[...Array(Math.floor(Number(t.rating) || 0))].map((_, i) => <FaStar key={i} />)}
-                {Number(t.rating) % 1 >= 0.5 && <FaStarHalfAlt />}
-                <Text fontSize="xs" color="gray.500" ml={1}>
-                {t.rating} / 5
+        <SimpleGrid className="about-testimonial-list" columns={{ base: 1, md: 3 }} spacing={5}>
+          {mockTestimonials.map((testimonial) => (
+            <Card className="about-testimonial-card" key={testimonial.id}>
+              <Flex className="about-testimonial-stars" gap={1} color="yellow.400" mb={3}>
+                {[...Array(Math.floor(Number(testimonial.rating) || 0))].map((_, index) => <FaStar key={index} />)}
+                {Number(testimonial.rating) % 1 >= 0.5 && <FaStarHalfAlt />}
+                <Text className="about-testimonial-rating" fontSize="xs" color="gray.500" ml={1}>
+                  {testimonial.rating} / 5
                 </Text>
               </Flex>
-              <Text color="gray.600" fontSize="sm" mb={3}>“{t.review}”</Text>
-              <Flex align="center" gap={3}>
-                <Avatar name={t.customer_name} size="sm" bg="blue.50" color="blue.600" />
+              <Text className="about-testimonial-review" color="gray.600" fontSize="sm" mb={3}>
+                “{testimonial.review}”
+              </Text>
+              <Flex className="about-testimonial-author" align="center" gap={3}>
+                <Avatar name={testimonial.customer_name} size="sm" bg="blue.50" color="blue.600" />
                 <Box>
-                  <Text fontSize="sm" fontWeight="700" color={NAVY}>{t.customer_name}</Text>
-                  <Text fontSize="xs" color="gray.500">{t.date}</Text>
+                  <Text className="about-testimonial-name" fontSize="sm" fontWeight="700" color={NAVY}>
+                    {testimonial.customer_name}
+                  </Text>
+                  <Text className="about-testimonial-date" fontSize="xs" color="gray.500">
+                    {testimonial.date}
+                  </Text>
                 </Box>
               </Flex>
             </Card>
@@ -459,17 +472,18 @@ function About() {
 
       {/* 12. FAQ */}
       <Section bg="#F3F9FE">
-        <SectionHeader eyebrow="FAQ" title="Questions we hear" highlight="most often" />
+        <SectionHeader eyebrow="FAQ" title="Questions we hear" highlight="most often"
+                       titleClassName="about-mobile-heading-23" />
         <Grid className="about-faq-layout" templateColumns={{ base: '1fr', lg: 'minmax(0, 1.5fr) minmax(260px, 0.8fr)' }}
               gap={{ base: 6, lg: 8 }} alignItems="start">
           <Accordion allowToggle>
             {faqs.map((f) => (
               <AccordionItem key={f.q} border="none" mb={3} bg="white" borderRadius="xl" boxShadow={cardShadow}>
                 <AccordionButton py={4} px={5} borderRadius="xl" _hover={{ bg: 'transparent' }}>
-                  <Box flex="1" textAlign="left" fontWeight="600" color={NAVY} fontSize="sm">{f.q}</Box>
+                  <Box className="about-faq-question" flex="1" textAlign="left" fontWeight="600" color={NAVY} fontSize="sm">{f.q}</Box>
                   <AccordionIcon color="blue.500" />
                 </AccordionButton>
-                <AccordionPanel px={5} pb={5} color="gray.500" fontSize="sm">{f.a}</AccordionPanel>
+                <AccordionPanel className="about-faq-answer" px={5} pb={5} color="gray.500" fontSize="sm">{f.a}</AccordionPanel>
               </AccordionItem>
             ))}
           </Accordion>
