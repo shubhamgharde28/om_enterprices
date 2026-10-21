@@ -1,7 +1,7 @@
 import { Alert, AlertIcon, Box, Button, Container, FormControl, FormLabel, Heading, Input, Link, Stack, Text, useToast } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { loginUser } from '../../redux/slices/authSlice'
 import { resendSignupConfirmation, signInCustomer } from '../../services/authService'
 
@@ -78,10 +78,10 @@ function Login() {
           </FormControl>
           <Button type="submit" colorScheme="primary" isLoading={isSubmitting}>Login</Button>
           <Text textAlign="center">
-            <Link href="/forgot-password">Forgot password?</Link>
+            <Link as={RouterLink} to="/forgot-password">Forgot password?</Link>
           </Text>
           <Text textAlign="center">
-            Need an account? <Link href="/signup">Sign up</Link>
+            Need an account? <Link as={RouterLink} to="/signup">Sign up</Link>
           </Text>
         </Stack>
       </Box>
