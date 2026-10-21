@@ -1,0 +1,96 @@
+.admin-product-enquiries .product-enquiries-table {
+  min-width: 1160px;
+}
+
+.admin-product-enquiries .product-enquiry-product {
+  min-width: 180px;
+  white-space: normal;
+}
+
+.product-enquiry-product a,
+.product-enquiry-details a,
+.product-enquiry-mobile-product {
+  color: #2673bf;
+  text-decoration: none;
+}
+
+.product-enquiry-product a:hover,
+.product-enquiry-details a:hover,
+.product-enquiry-mobile-product:hover {
+  color: #145b9e;
+  text-decoration: underline;
+}
+
+.product-enquiry-product span {
+  display: block;
+  margin-top: 4px;
+  color: #8090a5;
+  font-size: 11px;
+}
+
+.product-enquiry-contact {
+  min-width: 170px;
+  white-space: normal;
+}
+
+.product-enquiry-contact a {
+  display: block;
+  color: #456585;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+
+.product-enquiry-contact a + a {
+  margin-top: 5px;
+}
+
+.product-enquiry-contact a:hover {
+  color: #1768bd;
+  text-decoration: underline;
+}
+
+.contact-message-status.status-contacted {
+  background: #e7f8ef;
+  color: #19865a;
+}
+
+.contact-message-status.status-closed {
+  background: #f0f2f5;
+  color: #69788d;
+}
+
+.product-enquiry-mobile-product {
+  display: block;
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.admin-product-enquiries .product-enquiry-details {
+  gap: 12px;
+}
+
+.admin-product-enquiries .product-enquiry-details > div:not(.contact-message-full-text) {
+  grid-template-columns: minmax(100px, 145px) minmax(0, 1fr);
+}
+
+.admin-product-enquiries .product-enquiry-product-detail {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.product-enquiry-product-detail img {
+  width: 54px;
+  height: 54px;
+  flex: 0 0 auto;
+  border: 1px solid #e8edf4;
+  border-radius: 7px;
+  object-fit: contain;
+}
+
+@media (max-width: 1050px) {
+  .admin-product-enquiries .product-enquiries-table {
+    min-width: 1090px;
+  }
+}

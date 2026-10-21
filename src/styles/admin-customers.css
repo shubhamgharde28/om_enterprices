@@ -1,0 +1,242 @@
+.admin-customers .contact-messages-heading {
+  margin-bottom: 20px;
+}
+
+.admin-customers .contact-messages-heading > div > p {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.customers-error {
+  margin-bottom: 15px;
+  border-radius: 9px;
+  font-size: 13px;
+}
+
+.admin-customers .contact-message-stat.is-new strong {
+  color: #d18a24;
+}
+
+.admin-customers .contact-message-stat.is-read strong {
+  color: #18a66c;
+}
+
+.admin-customers .contact-messages-panel-heading {
+  min-height: 77px;
+}
+
+.admin-customers .customers-table {
+  min-width: 680px;
+}
+
+.admin-customers .customers-table th {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.admin-customers .customers-table td {
+  padding: 14px 15px;
+}
+
+.admin-customers .customers-table .customer-name-cell {
+  display: flex;
+  min-width: 200px;
+  align-items: center;
+  gap: 10px;
+}
+
+.customer-name-cell strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.customer-name-cell strong {
+  color: #344760;
+  font-weight: 650;
+}
+
+.customer-avatar {
+  display: inline-flex;
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #edf4fc;
+  color: #52749c;
+}
+
+.customer-avatar svg {
+  font-size: 13px;
+}
+
+.customer-contact-info {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.customer-contact-info > a,
+.customer-contact-info > span {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 7px;
+  color: #536780;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+
+.customer-contact-info > a:hover {
+  color: #1768bd;
+  text-decoration: underline;
+}
+
+.customer-contact-info > a svg {
+  flex: 0 0 auto;
+  color: #8999ae;
+  font-size: 11px;
+}
+
+.admin-customers .customers-table .customer-joined {
+  min-width: 125px;
+  color: #687a92;
+  white-space: nowrap;
+}
+
+.customer-status {
+  display: inline-flex;
+  min-width: 62px;
+  min-height: 25px;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 10px;
+  border-radius: 99px;
+  background: #fff5df;
+  color: #ae7813;
+  font-size: 11px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.customer-status.is-active {
+  background: #e7f8ef;
+  color: #19865a;
+}
+
+.customer-card {
+  padding: 14px;
+}
+
+.customer-mobile-name {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 9px;
+}
+
+.customer-mobile-name h3 {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.customer-mobile-name .customer-avatar {
+  flex-basis: 32px;
+  width: 32px;
+  height: 32px;
+}
+
+.customer-card .contact-message-card-heading {
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.customer-card-contact {
+  padding: 10px 0;
+  border-top: 1px solid #edf1f6;
+  border-bottom: 1px solid #edf1f6;
+}
+
+.customer-card-contact .customer-contact-info {
+  gap: 8px;
+}
+
+.customer-card-contact .customer-contact-info > a,
+.customer-card-contact .customer-contact-info > span {
+  font-size: 12px;
+}
+
+.customer-card-joined {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 10px;
+  color: #8190a4;
+  font-size: 11px;
+}
+
+.customer-card-joined time {
+  color: #52647e;
+  font-weight: 600;
+}
+
+@media (min-width: 851px) {
+  .admin-customers .contact-message-stat span {
+    font-size: 14px;
+  }
+
+  .admin-customers .customers-table th {
+    padding: 14px 16px;
+  }
+
+  .admin-customers .customers-table td {
+    padding: 16px;
+    font-size: 13px;
+  }
+
+  .customer-contact-info > a,
+  .customer-contact-info > span {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 850px) {
+  .admin-customers .contact-messages-heading {
+    margin-bottom: 16px;
+  }
+
+  .admin-customers .contact-messages-heading h1 {
+    font-size: 25px;
+  }
+
+  .admin-customers .contact-message-stat {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+}
+
+@media (max-width: 520px) {
+  .admin-customers .contact-messages-heading h1 {
+    font-size: 22px;
+  }
+
+  .customer-card {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  .customer-card .contact-message-card-heading {
+    gap: 6px;
+  }
+
+  .customer-card .customer-status {
+    min-width: 54px;
+    padding-right: 8px;
+    padding-left: 8px;
+    font-size: 10px;
+  }
+}
