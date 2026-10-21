@@ -1,0 +1,190 @@
+.admin-notification-popover {
+  z-index: 1500 !important;
+  overflow: hidden;
+  border: 1px solid #d9e5f3 !important;
+  border-radius: 17px !important;
+  background: #fff !important;
+  box-shadow: 0 12px 32px rgb(24 42 71 / 14%) !important;
+}
+
+.admin-notification-popover .chakra-popover__arrow {
+  background: #fff !important;
+  border-color: #d9e5f3 !important;
+}
+
+.admin-notification-header {
+  min-height: 47px;
+  padding: 13px 16px !important;
+  border-bottom: 1px solid #e8edf4 !important;
+  color: #1d2e49;
+  font-size: 15px;
+  font-weight: 720 !important;
+}
+
+.admin-notification-body {
+  display: grid;
+  max-height: min(420px, calc(100dvh - 104px));
+  gap: 11px;
+  padding: 11px 13px !important;
+  overscroll-behavior: contain;
+  scrollbar-color: #9aa7b8 #f4f6f9;
+  scrollbar-width: thin;
+}
+
+.admin-notification-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.admin-notification-body::-webkit-scrollbar-track {
+  border-radius: 8px;
+  background: #f4f6f9;
+}
+
+.admin-notification-body::-webkit-scrollbar-thumb {
+  border: 2px solid #f4f6f9;
+  border-radius: 8px;
+  background: #9aa7b8;
+}
+
+.admin-notification-card {
+  min-width: 0;
+  margin: 0 !important;
+  padding: 12px !important;
+  border-color: #dce5f0 !important;
+  border-radius: 16px !important;
+  background: #fff;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.admin-notification-card:hover {
+  border-color: #bfd8f2 !important;
+  box-shadow: 0 3px 10px rgb(36 75 122 / 6%);
+}
+
+.admin-notification-card > .chakra-flex {
+  align-items: flex-start;
+}
+
+.admin-notification-card > .chakra-flex > .chakra-box {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.admin-notification-title {
+  color: #243651;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.admin-notification-description {
+  color: #61728a !important;
+  font-size: 13px !important;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.admin-notification-dismiss {
+  flex: 0 0 auto;
+  width: 26px !important;
+  min-width: 26px !important;
+  height: 26px !important;
+  min-height: 26px !important;
+  margin: -4px -3px 0 0;
+  color: #26384e !important;
+}
+
+.admin-notification-dismiss:hover {
+  background: #f1f5fa !important;
+}
+
+.admin-notification-dismiss svg {
+  width: 11px;
+  height: 11px;
+}
+
+.admin-notification-link {
+  display: inline-flex !important;
+  min-height: 24px;
+  align-items: center;
+  margin-top: 7px !important;
+  color: #0780e8 !important;
+  font-size: 13px !important;
+  font-weight: 600;
+  text-decoration: none !important;
+}
+
+.admin-notification-link:hover {
+  color: #075fb0 !important;
+  text-decoration: underline !important;
+}
+
+.admin-notification-body > .chakra-text {
+  padding: 12px 3px;
+  color: #718198;
+  font-size: 13px;
+}
+
+@media (max-width: 600px) {
+  .admin-notification-popover {
+    width: min(366px, calc(100vw - 20px)) !important;
+    max-width: calc(100vw - 20px) !important;
+    max-height: calc(100dvh - 76px);
+    border-radius: 15px !important;
+  }
+
+  .admin-notification-header {
+    min-height: 44px;
+    padding: 12px 14px !important;
+    font-size: 14px;
+  }
+
+  .admin-notification-body {
+    max-height: calc(100dvh - 124px);
+    gap: 9px;
+    padding: 9px 10px !important;
+  }
+
+  .admin-notification-card {
+    padding: 11px !important;
+    border-radius: 14px !important;
+  }
+
+  .admin-notification-title {
+    font-size: 13px;
+  }
+
+  .admin-notification-description {
+    font-size: 12px !important;
+  }
+
+  .admin-notification-link {
+    font-size: 12px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .admin-notification-popover {
+    width: calc(100vw - 16px) !important;
+    max-width: calc(100vw - 16px) !important;
+  }
+
+  .admin-notification-body {
+    padding-right: 8px !important;
+    padding-left: 8px !important;
+  }
+
+  .admin-notification-card {
+    padding: 10px !important;
+  }
+}
+
+@media (max-height: 500px) {
+  .admin-notification-popover {
+    max-height: calc(100dvh - 58px);
+  }
+
+  .admin-notification-body {
+    max-height: calc(100dvh - 106px);
+  }
+}

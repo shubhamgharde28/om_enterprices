@@ -1,0 +1,141 @@
+.admin-solar-requests .solar-requests-table {
+  min-width: 1420px;
+}
+
+.admin-solar-requests .solar-request-type {
+  text-transform: capitalize;
+}
+
+.admin-solar-requests .solar-request-contact {
+  max-width: 180px;
+}
+
+.solar-request-contact a {
+  display: block;
+  color: #456585;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+
+.solar-request-contact a + a {
+  margin-top: 5px;
+}
+
+.solar-request-contact a:hover {
+  color: #1768bd;
+  text-decoration: underline;
+}
+
+.admin-solar-requests .solar-request-property,
+.admin-solar-requests .solar-request-service {
+  max-width: 230px;
+  white-space: normal;
+}
+
+.solar-request-property strong,
+.solar-request-property span,
+.solar-request-service strong,
+.solar-request-service span {
+  display: block;
+}
+
+.solar-request-property strong,
+.solar-request-service strong {
+  margin-bottom: 4px;
+  color: #344760;
+  font-weight: 650;
+}
+
+.solar-request-property span,
+.solar-request-service span {
+  margin-top: 3px;
+  color: #74849a;
+  font-size: 11px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.admin-solar-requests .solar-request-visit {
+  min-width: 130px;
+  white-space: normal;
+}
+
+.solar-request-card-type {
+  display: inline-flex;
+  margin: -3px 0 4px;
+  padding: 3px 8px;
+  border-radius: 99px;
+  background: #f0f5fb;
+  color: #59708d;
+  font-size: 10px;
+  font-weight: 650;
+  text-transform: capitalize;
+}
+
+.solar-request-card-details {
+  display: grid;
+  gap: 8px;
+  margin: 13px 0;
+  padding: 11px 0;
+  border-top: 1px solid #edf1f6;
+  border-bottom: 1px solid #edf1f6;
+}
+
+.solar-request-card-details > div {
+  display: grid;
+  grid-template-columns: minmax(92px, 115px) minmax(0, 1fr);
+  gap: 9px;
+}
+
+.solar-request-card-details dt {
+  color: #8190a4;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.solar-request-card-details dd {
+  min-width: 0;
+  margin: 0;
+  color: #455770;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.solar-request-card-details .solar-request-card-requirements {
+  grid-template-columns: 1fr;
+  gap: 4px;
+}
+
+.solar-request-modal-details {
+  gap: 12px;
+}
+
+.solar-request-modal-details > div:not(.contact-message-full-text) {
+  grid-template-columns: minmax(100px, 145px) minmax(0, 1fr);
+}
+
+@media (min-width: 851px) {
+  .admin-solar-requests .solar-request-property span,
+  .admin-solar-requests .solar-request-service span {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 1050px) {
+  .admin-solar-requests .solar-requests-table {
+    min-width: 1350px;
+  }
+}
+
+@media (max-width: 520px) {
+  .solar-request-card-details > div {
+    grid-template-columns: minmax(82px, 95px) minmax(0, 1fr);
+    gap: 7px;
+  }
+}
+
+@media (max-width: 360px) {
+  .solar-request-card-details > div {
+    grid-template-columns: 78px minmax(0, 1fr);
+  }
+}
