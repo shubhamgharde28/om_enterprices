@@ -15,6 +15,7 @@ import Contact from '../pages/public/Contact'
 import Login from '../pages/public/Login'
 import Signup from '../pages/public/Signup'
 import ForgotPassword from '../pages/public/ForgotPassword'
+import ResetPassword from '../pages/public/ResetPassword'
 import Profile from '../pages/public/Profile'
 import BookService from '../pages/public/BookService'
 import MyBookings from '../pages/public/MyBookings'
@@ -61,6 +62,7 @@ function AppRoutes() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         <Route element={<ProtectedRoute />}>
           <Route path="/book-service" element={<BookService />} />

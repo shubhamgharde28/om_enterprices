@@ -1,6 +1,6 @@
 import { Alert, AlertIcon, Box, Button, Container, FormControl, FormLabel, Heading, Input, Stack, Text, Link, useToast } from '@chakra-ui/react'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { loginUser } from '../../redux/slices/authSlice'
 import { signUpCustomer } from '../../services/authService'
@@ -78,7 +78,7 @@ function Signup() {
             <Input type="password" autoComplete="new-password" minLength={8} value={form.confirmPassword} onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })} required />
           </FormControl>
           <Button type="submit" colorScheme="primary" isLoading={isSubmitting}>Sign Up</Button>
-          <Text textAlign="center">Already have an account? <Link href="/login">Login</Link></Text>
+          <Text textAlign="center">Already have an account? <Link as={RouterLink} to="/login">Login</Link></Text>
         </Stack>
       </Box>
     </Container>

@@ -94,6 +94,7 @@ export const signUpCustomer = async ({ fullName, email, phone, password }) => {
     email,
     password,
     options: {
+      emailRedirectTo: `${window.location.origin}/login`,
       data: {
         full_name: fullName,
         phone,
@@ -151,6 +152,23 @@ export const resendSignupConfirmation = async (email) => {
     },
   })
 
+  if (error) throw error
+}
+
+export const requestPasswordReset = async (email) => {
+  requireSupabase()
+
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${window.location.origin}/reset-password`,
+  })
+
+  if (error) throw error
+}
+
+export const updateCustomerPassword = async (password) => {
+  requireSupabase()
+
+  const { error } = await supabase.auth.updateUser({ password })
   if (error) throw error
 }
 
