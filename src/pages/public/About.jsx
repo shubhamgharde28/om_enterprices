@@ -1,12 +1,13 @@
+import { useState } from 'react'
 import {
   Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel,
   Avatar, Box, Button, Container, Flex, Grid, Heading, Icon, Image, SimpleGrid, Text,
 } from '@chakra-ui/react'
 import { Link as RouterLink } from 'react-router-dom'
-import { FaStar, FaStarHalfAlt, FaTint } from 'react-icons/fa'
+import { FaQuoteLeft, FaStar, FaStarHalfAlt, FaTint } from 'react-icons/fa'
 import { mockTestimonials } from '../../data/mockData'
 import {
-  FiArrowRight, FiAward, FiCheckCircle, FiClock, FiDroplet, FiEye, FiHeart,
+  FiArrowRight, FiAward, FiCheckCircle, FiChevronLeft, FiChevronRight, FiClock, FiDroplet, FiEye, FiHeart,
   FiMapPin, FiMessageCircle, FiRefreshCw, FiSearch, FiSettings, FiShield, FiStar, FiTarget,
   FiThumbsUp, FiTool, FiTruck, FiUsers, FiCalendar, FiPackage,
 } from 'react-icons/fi'
@@ -187,6 +188,13 @@ const PhotoFrame = ({ src, alt, h }) => (
 
 /* ---------- Page ---------- */
 function About() {
+  const [testimonialStart, setTestimonialStart] = useState(0)
+  const visibleTestimonials = 3
+  const testimonialPageCount = Math.max(1, mockTestimonials.length - visibleTestimonials + 1)
+  const averageRating = mockTestimonials.length
+    ? (mockTestimonials.reduce((total, testimonial) => total + Number(testimonial.rating || 0), 0) / mockTestimonials.length).toFixed(1)
+    : '0.0'
+
   return (
     <Box className="about-page" bg="white" overflow="hidden">
       {/* 1. HERO */}
@@ -196,8 +204,8 @@ function About() {
             <Pill>About Us</Pill>
             <Heading className="about-page-title" as="h1" color={NAVY} fontWeight="800" lineHeight="1.1" letterSpacing="-0.02em"
                      fontSize="44px">
-              Your Dependable
-              <Text as="span" display="block" color={BLUE}>Water Purification Partner</Text>
+              Pure Water,
+              <Text as="span" display="block" color={BLUE}>Trusted Care</Text>
             </Heading>
             <Text mt={5} color="gray.600" fontSize={{ base: 'md', md: 'lg' }} maxW="520px" mx={{ base: 'auto', lg: 0 }}>
               OM Enterprises helps families and businesses access safe, clean and mineral-balanced drinking
@@ -270,20 +278,20 @@ function About() {
           </Box>
           <Box order={{ base: 1, lg: 2 }}>
             <SectionHeader align="left" eyebrow="Our Story" title="Built on a simple belief:" highlight="clean water is a right" titleClassName="about-story-title" />
-            <Text color="gray.600" mb={4}>
+            <Text className="about-story-copy" color="gray.600" mb={4}>
               OM Enterprises began with one goal — to help families stop worrying about what’s in their glass.
               What started as a small purifier shop has grown into a complete water-care partner for homes,
               offices and businesses.
             </Text>
-            <Text color="gray.600" mb={6}>
+            <Text className="about-story-copy" color="gray.600" mb={6}>
               Over the years we’ve learned that a good purifier is only half the story. The other half is the
               people who install it, maintain it and answer your call when you need help.
             </Text>
-            <SimpleGrid columns={{ base: 1, sm: 2 }} spacing={3}>
+            <SimpleGrid className="about-story-points" columns={{ base: 1, sm: 2 }} spacing={3}>
               {storyPoints.map((p) => (
-                <Flex key={p} gap={2} align="flex-start">
+                <Flex className="about-story-point" key={p} gap={2} align="flex-start">
                   <Icon as={FiCheckCircle} color="blue.500" mt="3px" flexShrink={0} />
-                  <Text fontSize="sm" color={NAVY}>{p}</Text>
+                  <Text className="about-story-point-text" fontSize="sm" color={NAVY}>{p}</Text>
                 </Flex>
               ))}
             </SimpleGrid>
@@ -315,7 +323,7 @@ function About() {
             <Card className="about-value-card" key={v.title}>
               <IconCircle className="about-value-icon" icon={v.icon} />
               <Heading className="about-value-card-title" as="h3" fontSize="md" color={NAVY} mt={4} mb={2}>{v.title}</Heading>
-              <Text fontSize="sm" color="gray.500">{v.text}</Text>
+              <Text className="about-value-card-description" fontSize="sm" color="gray.500">{v.text}</Text>
             </Card>
           ))}
         </SimpleGrid>
@@ -441,33 +449,74 @@ function About() {
         <SectionHeader eyebrow="Testimonials" title="What our" highlight="customers say"
                        titleClassName="about-mobile-heading-23"
                        text="Real people. Real experiences. Trusted by thousands." />
-        <SimpleGrid className="about-testimonial-list" columns={{ base: 1, md: 3 }} spacing={5}>
-          {mockTestimonials.map((testimonial) => (
-            <Card className="about-testimonial-card" key={testimonial.id}>
-              <Flex className="about-testimonial-stars" gap={1} color="yellow.400" mb={3}>
-                {[...Array(Math.floor(Number(testimonial.rating) || 0))].map((_, index) => <FaStar key={index} />)}
-                {Number(testimonial.rating) % 1 >= 0.5 && <FaStarHalfAlt />}
-                <Text className="about-testimonial-rating" fontSize="xs" color="gray.500" ml={1}>
-                  {testimonial.rating} / 5
-                </Text>
+        <Box className="about-testimonial-showcase">
+          <Flex className="about-testimonial-summary" direction="column" align="center">
+            <Flex className="about-testimonial-summary-rating" align="center" gap={2}>
+              <Flex className="about-testimonial-summary-stars" aria-label={`${averageRating} out of 5 stars`}>
+                {[...Array(5)].map((_, index) => <FaStar key={index} />)}
               </Flex>
-              <Text className="about-testimonial-review" color="gray.600" fontSize="sm" mb={3}>
-                “{testimonial.review}”
-              </Text>
-              <Flex className="about-testimonial-author" align="center" gap={3}>
-                <Avatar name={testimonial.customer_name} size="sm" bg="blue.50" color="blue.600" />
-                <Box>
-                  <Text className="about-testimonial-name" fontSize="sm" fontWeight="700" color={NAVY}>
-                    {testimonial.customer_name}
-                  </Text>
-                  <Text className="about-testimonial-date" fontSize="xs" color="gray.500">
-                    {testimonial.date}
-                  </Text>
-                </Box>
-              </Flex>
-            </Card>
-          ))}
-        </SimpleGrid>
+              <span className="about-testimonial-summary-divider" />
+              <strong>{averageRating}/5</strong>
+            </Flex>
+            <Text>from 257+ happy customers</Text>
+          </Flex>
+
+          <div className="about-testimonial-list">
+            {mockTestimonials.slice(testimonialStart, testimonialStart + visibleTestimonials).map((testimonial) => (
+              <article className="about-testimonial-card" key={testimonial.id}>
+                <div className="about-testimonial-review-row">
+                  <span className="about-testimonial-quote"><FaQuoteLeft /></span>
+                  <div className="about-testimonial-review-content">
+                    <p className="about-testimonial-review">“{testimonial.review}”</p>
+                    <div className="about-testimonial-stars">
+                      {[...Array(Math.floor(Number(testimonial.rating) || 0))].map((_, index) => <FaStar key={index} />)}
+                      {Number(testimonial.rating) % 1 >= 0.5 && <FaStarHalfAlt />}
+                      <span className="about-testimonial-rating">{testimonial.rating}/5</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="about-testimonial-author">
+                  <Avatar name={testimonial.customer_name} size="sm" bg="blue.50" color="blue.600" />
+                  <div>
+                    <p className="about-testimonial-name">{testimonial.customer_name}</p>
+                    <p className="about-testimonial-date">{testimonial.date}</p>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          {testimonialPageCount > 1 && (
+            <nav className="about-testimonial-pagination" aria-label="Testimonial pages">
+              <button
+                type="button"
+                aria-label="Previous testimonials"
+                onClick={() => setTestimonialStart((start) => (start - 1 + testimonialPageCount) % testimonialPageCount)}
+              >
+                <FiChevronLeft />
+              </button>
+              <div className="about-testimonial-dots">
+                {[...Array(testimonialPageCount)].map((_, index) => (
+                  <button
+                    type="button"
+                    key={index}
+                    className={index === testimonialStart ? 'is-active' : ''}
+                    aria-label={`Show testimonial page ${index + 1}`}
+                    aria-current={index === testimonialStart ? 'page' : undefined}
+                    onClick={() => setTestimonialStart(index)}
+                  />
+                ))}
+              </div>
+              <button
+                type="button"
+                aria-label="Next testimonials"
+                onClick={() => setTestimonialStart((start) => (start + 1) % testimonialPageCount)}
+              >
+                <FiChevronRight />
+              </button>
+            </nav>
+          )}
+        </Box>
       </Section>
 
       {/* 12. FAQ */}
