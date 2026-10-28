@@ -30,6 +30,7 @@ const navSections = [
     label: 'RO / Water Purifier',
     items: [
       { label: 'Products', path: '/admin/products', icon: FaBoxOpen },
+      { label: 'Add Spare Part', path: '/admin/spare-parts', icon: FaTools },
       { label: 'Categories', path: '/admin/categories', icon: FaCalendarAlt },
       { label: 'Services', path: '/admin/services', icon: FaCog },
       { label: 'Technicians', path: '/admin/technicians', icon: FaTools },

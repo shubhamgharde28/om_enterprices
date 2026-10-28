@@ -54,7 +54,7 @@ function SolarFaqPage() {
         <Container maxW="1400px" className="solar-faq-page-hero-inner">
           <Box className="solar-faq-page-hero-copy">
             <Text className="solar-eyebrow">Helpful answers</Text>
-            <Heading>Frequently Asked Questions</Heading>
+            <Heading as="h1">Frequently Asked <span>Questions</span></Heading>
             <Text>
               Find quick answers to the most common questions about solar energy, installation, maintenance and more. If you don’t find what you’re looking for, feel free to reach out to us.
             </Text>
@@ -72,21 +72,6 @@ function SolarFaqPage() {
           </Box>
 
           <Box className="solar-faq-page-visual" role="img" aria-label="Solar panels on a home surrounded by greenery" />
-
-          <Box className="solar-faq-support-card">
-            <Heading size="sm">Need Help?</Heading>
-            <Text className="solar-faq-support-intro">Our team is here to assist you with any solar related queries.</Text>
-            {faqSupportItems.map(({ icon: Icon, title, detail, note }) => (
-              <Box className="solar-faq-support-item" key={title}>
-                <Box className="solar-faq-support-icon"><Icon /></Box>
-                <Box>
-                  <Text>{title}</Text>
-                  <Text>{detail}</Text>
-                  <Text>{note}</Text>
-                </Box>
-              </Box>
-            ))}
-          </Box>
         </Container>
       </Box>
 
@@ -111,6 +96,21 @@ function SolarFaqPage() {
           <Button className="solar-primary-cta" as={RouterLink} to="/solar/request/consultation" rightIcon={<FaArrowRight />}>
             Book a consultation
           </Button>
+        </Box>
+
+        <Box className="solar-faq-support-card">
+          <Heading size="sm">Need Help?</Heading>
+          <Text className="solar-faq-support-intro">Our team is here to assist you with any solar related queries.</Text>
+          {faqSupportItems.map(({ icon: Icon, title, detail, note }) => (
+            <Box className="solar-faq-support-item" key={title}>
+              <Box className="solar-faq-support-icon"><Icon /></Box>
+              <Box>
+                <Text>{title}</Text>
+                <Text>{detail}</Text>
+                <Text>{note}</Text>
+              </Box>
+            </Box>
+          ))}
         </Box>
 
         <Box className="solar-faq-page-questions">

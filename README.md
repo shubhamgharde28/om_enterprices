@@ -6,6 +6,7 @@ A modern, responsive water purifier sales and service platform built with React,
 
 - Customer storefront for products and services
 - Product search and filtering
+- Admin-managed compatible spare parts shown on the home and product detail pages
 - Service booking workflow
 - Profile and booking management
 - Custom admin dashboard and role-aware access flow
@@ -33,7 +34,8 @@ Important: Never expose the Supabase service role key in frontend code. Keep it 
 ## Supabase setup
 
 1. Create a Supabase project and open **SQL Editor** in its dashboard.
-2. Open `supabase/schema.sql` in this repository, copy its contents into a new SQL Editor query, then select **Run**. This creates the application tables, indexes, signup profile trigger, and Row Level Security policies. For an existing project, also run `alter table public.products add column if not exists purifier_details jsonb not null default '{}'::jsonb;` in SQL Editor to enable the purifier specifications field.
+2. For a new project, open `supabase/schema.sql` in this repository, copy its contents into a new SQL Editor query, then select **Run**. This creates the application tables, indexes, signup profile trigger, Storage bucket, and Row Level Security policies.
+   For an existing project, apply only migrations that have not already been applied. Apply `20261028_add_product_spare_parts.sql` to enable compatible spare-part management and `20261029_allow_empty_spare_part_links.sql` to allow creating spare-part products without linked parts. The `20261028_repair_profiles_and_product_bucket.sql` migration repairs older profile columns and configures the `product` Storage bucket. Do not run every historical migration on top of `schema.sql`; the base schema already includes those features.
 3. In **Authentication → Providers**, enable email/password sign-in.
 4. In **Project Settings → API**, copy the project URL and public anon/publishable key into `.env` as `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`. Never put the service role key in frontend code.
 5. Create the first account using the app's signup page. The database trigger automatically creates a customer profile.

@@ -148,7 +148,11 @@ function ProductDetails() {
     setSelectedProductId(product.id)
     setSelectedImageIndex((activeImageIndex + offset + imageUrls.length) % imageUrls.length)
   }
-  const specificationRows = [
+  const isSparePart = product.product_type === 'Spare Parts'
+  const specificationRows = (isSparePart ? [
+    ['Compatible with', product.suitable_for],
+    ['Warranty', product.warranty],
+  ] : [
     ['Product type', product.product_type],
     ['Storage capacity', purifierDetails.storage_capacity != null && purifierDetails.storage_capacity !== ''
       ? `${purifierDetails.storage_capacity} L`
@@ -172,11 +176,14 @@ function ProductDetails() {
       : 'Not available'],
     ['Box contents', purifierDetails.box_contents],
     ['Stock', product.stock != null ? `${product.stock} available` : ''],
-  ].filter(([, value]) => value !== null && value !== undefined && value !== '')
+  ]).filter(([, value]) => value !== null && value !== undefined && value !== '')
 
-  const technologies = purifierDetails.technologies?.length
+  const technologies = !isSparePart && purifierDetails.technologies?.length
     ? purifierDetails.technologies
-    : product.purification_technology?.split(/\s*\+\s*/).filter(Boolean) ?? []
+    : !isSparePart ? product.purification_technology?.split(/\s*\+\s*/).filter(Boolean) ?? [] : []
+  const relatedSpareParts = product.spare_parts?.length
+    ? product.spare_parts
+    : products.filter((item) => product.spare_part_ids?.includes(item.id) && item.active)
 
   const openEnquiry = () => {
     setEnquiryForm({
@@ -300,7 +307,7 @@ function ProductDetails() {
           <aside className="pd-summary">
             {product.product_type && <span className="pd-badge">{product.product_type}</span>}
             <h1>{product.name}</h1>
-            <p className="pd-rating"><FaStar aria-hidden="true" /> {product.rating || 4.8} (Rated)</p>
+            {!isSparePart && <p className="pd-rating"><FaStar aria-hidden="true" /> {product.rating || 4.8} (Rated)</p>}
 
             <div className="pd-price-row">
               <strong>₹{product.price.toLocaleString('en-IN')}</strong>
@@ -329,18 +336,18 @@ function ProductDetails() {
                 <span><FaTruck aria-hidden="true" /></span>
                 <p><strong>Safe Delivery</strong><small>Carefully delivered to your door</small></p>
               </div>
-              <div>
+              {!isSparePart && <div>
                 <span><FaTools aria-hidden="true" /></span>
                 <p><strong>Expert Installation</strong><small>Professional setup support</small></p>
-              </div>
+              </div>}
               <div>
                 <span><FaHeadset aria-hidden="true" /></span>
                 <p><strong>After-Sales Support</strong><small>Help when you need it</small></p>
               </div>
-              <div>
+              {!isSparePart && <div>
                 <span><FaShieldAlt aria-hidden="true" /></span>
                 <p><strong>Warranty Assistance</strong><small>Support for product coverage</small></p>
-              </div>
+              </div>}
             </div>
           </aside>
         </section>
@@ -375,6 +382,33 @@ function ProductDetails() {
                   {showAllSpecs ? 'View less' : 'View more'} <FaChevronDown className={showAllSpecs ? 'is-flipped' : undefined} />
                 </button>
               )}
+            </div>
+          </section>
+        )}
+
+        {product.product_type !== 'Spare Parts' && relatedSpareParts.length > 0 && (
+          <section className="pd-related-spare-parts" aria-labelledby="pd-related-spare-parts-title">
+            <div className="pd-related-spare-parts-heading">
+              <div>
+                <p>Compatible replacements</p>
+                <h2 id="pd-related-spare-parts-title">Spare parts for {product.name}</h2>
+              </div>
+            </div>
+            <div className="pd-related-spare-parts-grid">
+              {relatedSpareParts.map((sparePart) => (
+                <Link
+                  className="pd-related-spare-part"
+                  key={sparePart.id}
+                  to={`/products/${sparePart.slug || sparePart.id}`}
+                >
+                  <img src={sparePart.image_url || '/images/Premium_Purifier.png'} alt={sparePart.name} loading="lazy" />
+                  <div>
+                    <strong>{sparePart.name}</strong>
+                    {sparePart.short_description && <span>{sparePart.short_description}</span>}
+                    <b>₹{Number(sparePart.price || 0).toLocaleString('en-IN')} <FaArrowRight /></b>
+                  </div>
+                </Link>
+              ))}
             </div>
           </section>
         )}

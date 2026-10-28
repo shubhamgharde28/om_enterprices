@@ -74,14 +74,16 @@ function Home() {
   const websiteContent = useSelector((state) => state.ui.websiteContent)
   const testimonialItems = useSelector((state) => state.ui.testimonials)
   const activeProducts = productItems.filter((product) => product.active)
-  const featuredProducts = activeProducts.filter((product) => product.featured)
-  const products = [...featuredProducts, ...activeProducts.filter((product) => !product.featured)].slice(0, 6)
+  const purifierProducts = activeProducts.filter((product) => product.product_type !== 'Spare Parts')
+  const spareParts = activeProducts.filter((product) => product.product_type === 'Spare Parts').slice(0, 3)
+  const featuredProducts = purifierProducts.filter((product) => product.featured)
+  const products = [...featuredProducts, ...purifierProducts.filter((product) => !product.featured)].slice(0, 6)
   const activeServices = serviceItems.filter((service) => service.active).slice(0, 4)
   const testimonials = testimonialItems.filter((item) => item.active)
   const currentTestimonial = testimonials.length
     ? testimonials[activeTestimonialIndex % testimonials.length]
     : null
-  const featuredProduct = featuredProducts[0] || activeProducts[0]
+  const featuredProduct = featuredProducts[0] || purifierProducts[0]
   const selectedProductIndex = products.length ? activeProductIndex % products.length : 0
   const currentProduct = products[selectedProductIndex]
   const previousProduct = products.length > 1
@@ -354,6 +356,41 @@ function Home() {
             )}
           </div>
         </section>
+
+        {spareParts.length > 0 && (
+          <section className="home-spare-parts" aria-labelledby="home-spare-parts-title">
+            <div className="home-section">
+              <div className="home-spare-parts-heading">
+                <div className="home-products-title">
+                  <p className="home-eyebrow">Genuine replacements</p>
+                  <h2 id="home-spare-parts-title">Explore Our<br /><span>RO Spare Parts</span></h2>
+                  <p>Keep your purifier performing at its best with genuine replacement parts.</p>
+                </div>
+                <Link className="home-button home-button-primary home-spare-parts-cta" to="/products">
+                  Browse all products <FaArrowRight />
+                </Link>
+              </div>
+              <div className="home-spare-parts-grid">
+                {spareParts.map((part) => (
+                  <article className="home-spare-part-card" key={part.id}>
+                    <Link className="home-spare-part-image" to={`/products/${part.slug}`} aria-label={`View ${part.name}`}>
+                      <img src={part.image_url || '/images/Premium_Purifier.png'} alt={part.name} loading="lazy" />
+                    </Link>
+                    <div className="home-spare-part-copy">
+                      <Link to={`/products/${part.slug}`}><h3>{part.name}</h3></Link>
+                      <p>{part.short_description || part.suitable_for || 'Genuine replacement part for your water purifier.'}</p>
+                      {part.warranty && <small>{part.warranty} warranty</small>}
+                      <div>
+                        <strong>₹{formatPrice(part.price)}</strong>
+                        <Link to={`/products/${part.slug}`} aria-label={`View ${part.name}`}>View part <FaArrowRight /></Link>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {featuredProduct && (
           <section className="home-section home-featured">

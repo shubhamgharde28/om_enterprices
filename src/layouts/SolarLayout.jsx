@@ -31,7 +31,7 @@ function SolarLayout() {
     <Box className="solar-site">
       <Box as="header" className="solar-header">
         <Flex className="solar-header-inner" align="center" justify="space-between" w="100%" maxW="1400px" mx="auto" px={{ base: 4, md: 8 }} py={4}>
-          <NavLink to="/solar" className="solar-brand" aria-label="Sunward Solar home">
+          <NavLink to="/solar" className="solar-brand" aria-label="Tata Solar by OM Enterprises home">
             <Image src="/logo.png" alt="OM Enterprises" h="32px" w="auto" />
           </NavLink>
           <Show above="lg">
@@ -49,12 +49,12 @@ function SolarLayout() {
               ))}
             </HStack>
           </Show>
-          <HStack spacing={2}>
+          <HStack className="solar-header-actions" spacing={2} align="center" flexShrink={0}>
             <Show above="lg">
               <Button className="solar-header-switch" as={RouterLink} to="/choose" size="sm">Switch to RO</Button>
             </Show>
             <Show above="md">
-              <Button className="solar-primary-cta" as={RouterLink} to="/solar/request/consultation" colorScheme="green" size="sm">Get a consultation</Button>
+              <Button className="solar-primary-cta solar-header-cta" as={RouterLink} to="/solar/request/consultation" colorScheme="green" size="sm">Get a consultation</Button>
             </Show>
             <Show below="lg">
               <Button className="solar-header-switch solar-header-switch-mobile" as={RouterLink} to="/choose" size="sm">
@@ -95,7 +95,7 @@ function SolarLayout() {
               <Box className="solar-drawer-promo-content">
                 <Text className="solar-drawer-promo-eyebrow">Go green</Text>
                 <Heading as="h2">Clean Energy<br />for a Better<br /><span>Tomorrow</span></Heading>
-                <Text>Explore our solar solutions and make a sustainable choice for your future.</Text>
+                <Text>Explore Tata Power Solar solutions with OM Enterprises and find the right next step for your property.</Text>
                 <Button as={RouterLink} to="/solar/services" onClick={onClose} rightIcon={<FaChevronRight />}>
                   Learn More
                 </Button>
@@ -113,7 +113,7 @@ function SolarLayout() {
               <NavLink to="/solar" aria-label="OM Enterprises home">
                 <Image className="solar-footer-logo" src="/logo.png" alt="OM Enterprises" h="42px" w="auto" mb={2} />
               </NavLink>
-              <Text className="solar-footer-tagline">Clean Energy. Brighter Tomorrow.</Text>
+              <Text className="solar-footer-tagline">Tata Solar solutions by OM Enterprises</Text>
             </Box>
             <Box>
               <Text className="solar-footer-heading">Quick Links</Text>

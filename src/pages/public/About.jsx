@@ -71,22 +71,22 @@ const offerings = [
   {
     icon: FiPackage, title: 'Purifier Sales',
     text: 'RO, UV and UF purifiers from leading brands for homes, offices and shops.',
-    image: 'https://roservicenearme-waterpurifierservice.in/img/ro.png',
+    image: '/service_page/PurifierSales.png',
   },
   {
     icon: FiTool, title: 'Installation',
     text: 'Professional, neat and safe setup with a quick demo on how to use it.',
-    image: 'https://roservicejabalpur.in/images/banner.png',
+    image: '/service_page/Installation.png',
   },
   {
     icon: FiSettings, title: 'Servicing & AMC',
     text: 'Regular filter changes and cleaning plans that keep performance at its best.',
-    image: 'https://octaprosolution.com/wp-content/uploads/2023/09/ro.png',
+    image: '/service_page/Servicing&AMC.png',
   },
   {
     icon: FiRefreshCw, title: 'Repair & Replacement',
     text: 'Fast diagnosis, dependable repairs and upgrades when it’s time for a new system.',
-    image: 'https://www.houseofpurifier.com/HtmlResource/img/banner1.png',
+    image: '/service_page/Repair&Replacement.png',
   },
 ]
 

@@ -93,6 +93,38 @@ function Products() {
       return b.id.localeCompare(a.id)
     })
   }, [products, search, category, type, sortBy])
+  const purifierProducts = filteredProducts.filter((product) => product.product_type !== 'Spare Parts')
+  const sparePartProducts = filteredProducts.filter((product) => product.product_type === 'Spare Parts')
+
+  const renderProductCard = (product) => {
+    const mrp = getMrp(product)
+    const discount = mrp > product.price ? Math.round((1 - product.price / mrp) * 100) : 0
+    return (
+      <article className="pr-card" key={product.id}>
+        <div className="pr-card-image">
+          <img src={getImage(product)} alt={product.name} loading="lazy" />
+        </div>
+        <div className="pr-card-body">
+          {product.product_type && <span className="pr-badge">{product.product_type}</span>}
+          <h3>{product.name}</h3>
+          <p className="pr-card-desc">{getDescription(product)}</p>
+          {product.rating ? (
+            <p className="pr-rating">
+              <FaStar aria-hidden="true" /> <b>{Number(product.rating).toFixed(1)}</b> (Rated)
+            </p>
+          ) : null}
+          <div className="pr-price-row">
+            <strong>{formatPrice(product.price)}</strong>
+            {discount > 0 && <s>{formatPrice(mrp)}</s>}
+            {discount > 0 && <span className="pr-off">{discount}% OFF</span>}
+          </div>
+        </div>
+        <Link className="pr-card-btn" to={`/products/${product.slug || product.id}`}>
+          View Details <FaArrowRight />
+        </Link>
+      </article>
+    )
+  }
 
   return (
     <div className="pr-page">
@@ -100,10 +132,9 @@ function Products() {
       <section className="pr-hero">
         <div className="pr-hero-inner">
           <p className="pr-eyebrow">PURE WATER. BETTER LIVING.</p>
-          <h1>Our <span>Water Purifiers</span></h1>
+          <h1>Purifiers &amp; <span>Spare Parts</span></h1>
           <p className="pr-hero-text">
-            Discover advanced, reliable and energy-efficient water purifiers for a healthier you and
-            your family.
+            Find the right water purifier and genuine replacement parts to keep it working at its best.
           </p>
         </div>
       </section>
@@ -229,37 +260,26 @@ function Products() {
           {isLoading ? (
             <p className="pr-loading">Loading products…</p>
           ) : filteredProducts.length ? (
-            <div className="pr-grid">
-              {filteredProducts.map((product) => {
-                const mrp = getMrp(product)
-                const discount = mrp > product.price ? Math.round((1 - product.price / mrp) * 100) : 0
-                return (
-                  <article className="pr-card" key={product.id}>
-                    <div className="pr-card-image">
-                      <img src={getImage(product)} alt={product.name} loading="lazy" />
-                    </div>
-                    <div className="pr-card-body">
-                      {product.product_type && <span className="pr-badge">{product.product_type}</span>}
-                      <h3>{product.name}</h3>
-                      <p className="pr-card-desc">{getDescription(product)}</p>
-                      {product.rating ? (
-                        <p className="pr-rating">
-                          <FaStar aria-hidden="true" /> <b>{Number(product.rating).toFixed(1)}</b> (Rated)
-                        </p>
-                      ) : null}
-                      <div className="pr-price-row">
-                        <strong>{formatPrice(product.price)}</strong>
-                        {discount > 0 && <s>{formatPrice(mrp)}</s>}
-                        {discount > 0 && <span className="pr-off">{discount}% OFF</span>}
-                      </div>
-                    </div>
-                    <Link className="pr-card-btn" to={`/products/${product.slug || product.id}`}>
-                      View Details <FaArrowRight />
-                    </Link>
-                  </article>
-                )
-              })}
-            </div>
+            <>
+              {purifierProducts.length > 0 && (
+                <section className="pr-results-group" aria-labelledby="pr-purifiers-title">
+                  <header className="pr-results-group-heading">
+                    <h2 id="pr-purifiers-title">Water Purifiers</h2>
+                    <span>{purifierProducts.length} products</span>
+                  </header>
+                  <div className="pr-grid">{purifierProducts.map(renderProductCard)}</div>
+                </section>
+              )}
+              {sparePartProducts.length > 0 && (
+                <section className="pr-results-group" aria-labelledby="pr-spare-parts-title">
+                  <header className="pr-results-group-heading">
+                    <h2 id="pr-spare-parts-title">Spare Parts</h2>
+                    <span>{sparePartProducts.length} parts</span>
+                  </header>
+                  <div className="pr-grid">{sparePartProducts.map(renderProductCard)}</div>
+                </section>
+              )}
+            </>
           ) : (
             <EmptyState
               title="No products found"

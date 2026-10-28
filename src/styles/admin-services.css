@@ -214,6 +214,55 @@
   box-shadow: 0 0 0 1px #6ca3e8;
 }
 
+.admin-services .service-image-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+.service-image-upload {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
+  border: 1px dashed #cbd7e5;
+  border-radius: 9px;
+  background: #f8fafd;
+}
+
+.service-image-preview {
+  width: 108px;
+  height: 88px;
+  flex: 0 0 auto;
+  border: 1px solid #e3e9f0;
+  border-radius: 7px;
+  background: #fff;
+  object-fit: contain;
+}
+
+.service-image-upload-copy {
+  min-width: 0;
+}
+
+@media (max-width: 480px) {
+  .service-image-upload {
+    align-items: flex-start;
+    gap: 10px;
+    padding: 9px;
+  }
+
+  .service-image-preview {
+    width: 82px;
+    height: 76px;
+  }
+}
+
 .services-form-actions {
   display: flex;
   flex-direction: column;

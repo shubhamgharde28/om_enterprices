@@ -90,6 +90,28 @@
 
 /* ---------- Grid + cards ---------- */
 .pr-results { margin-top: 30px; scroll-margin-top: 100px; }
+.pr-results-group + .pr-results-group { margin-top: 42px; }
+.pr-results-group-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--pr-border);
+}
+.pr-results-group-heading h2 {
+  margin: 0;
+  color: var(--pr-navy);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+.pr-results-group-heading span {
+  color: var(--pr-text);
+  font-size: 12px;
+  font-weight: 600;
+}
 .pr-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
 .pr-loading, .pr-error { font-size: 14px; color: var(--pr-text); }
 .pr-error { color: #c53030; margin-bottom: 14px; }
@@ -264,6 +286,10 @@
   .pr-filter-apply { border: 1px solid var(--pr-blue); color: #fff; background: var(--pr-blue); }
 
   .pr-results { margin-top: 18px; }
+  .pr-results-group + .pr-results-group { margin-top: 30px; }
+  .pr-results-group-heading { margin-bottom: 12px; padding-bottom: 9px; }
+  .pr-results-group-heading h2 { font-size: 20px; }
+  .pr-results-group-heading span { font-size: 11px; }
   .pr-grid { grid-template-columns: 1fr; gap: 14px; }
   .pr-card {
     display: flex;

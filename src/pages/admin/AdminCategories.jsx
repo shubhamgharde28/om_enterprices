@@ -1,26 +1,20 @@
-import { Box, Button, Container, FormControl, FormLabel, Input, Progress, Stack, Table, Tbody, Td, Text, Th, Thead, Tr, useToast } from '@chakra-ui/react'
-import { useEffect, useRef, useState } from 'react'
+import { Box, Button, Container, FormControl, FormLabel, Input, Stack, Table, Tbody, Td, Th, Thead, Tr, useToast } from '@chakra-ui/react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { FaChevronRight, FaFolderOpen, FaPlus } from 'react-icons/fa'
 import { addCategory, deleteCategory, setCategories, updateCategory } from '../../redux/slices/categorySlice'
-import { createCategory, deleteCategoryRecord, fetchCategories, maxProductImageSize, updateCategoryRecord, uploadProductImage, validateProductImageFile } from '../../services/supabase'
+import { createCategory, deleteCategoryRecord, fetchCategories, updateCategoryRecord } from '../../services/supabase'
 import '../../styles/admin-categories.css'
 
 function AdminCategories() {
   const categories = useSelector((state) => state.categories.items)
   const dispatch = useDispatch()
   const [name, setName] = useState('')
-  const [imageUrl, setImageUrl] = useState('')
-  const [selectedImage, setSelectedImage] = useState(null)
-  const [isUploadingImage, setIsUploadingImage] = useState(false)
-  const [isSelectedImageUploaded, setIsSelectedImageUploaded] = useState(false)
   const [editingId, setEditingId] = useState(null)
   const [activeView, setActiveView] = useState('categories')
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
-  const fileInputRef = useRef(null)
-  const uploadedImageRef = useRef(null)
   const toast = useToast()
 
   useEffect(() => {
@@ -46,35 +40,16 @@ function AdminCategories() {
     setIsSaving(true)
     setErrorMessage('')
     try {
-      let categoryImageUrl = imageUrl
-      if (selectedImage) {
-        categoryImageUrl = uploadedImageRef.current
-        if (!categoryImageUrl) {
-          setIsUploadingImage(true)
-          try {
-            categoryImageUrl = await uploadProductImage(selectedImage.file)
-            uploadedImageRef.current = categoryImageUrl
-            setIsSelectedImageUploaded(true)
-          } finally {
-            setIsUploadingImage(false)
-          }
-        }
-      }
       if (editingId) {
-        const savedCategory = await updateCategoryRecord(editingId, { name, image_url: categoryImageUrl })
+        const savedCategory = await updateCategoryRecord(editingId, { name })
         dispatch(updateCategory(savedCategory))
         toast({ title: 'Category updated', status: 'success', duration: 2500, isClosable: true })
       } else {
-        const savedCategory = await createCategory({ name, image_url: categoryImageUrl })
+        const savedCategory = await createCategory({ name })
         dispatch(addCategory(savedCategory))
         toast({ title: 'Category saved to Supabase', status: 'success', duration: 2500, isClosable: true })
       }
       setName('')
-      setImageUrl('')
-      setSelectedImage(null)
-      setIsSelectedImageUploaded(false)
-      uploadedImageRef.current = null
-      if (fileInputRef.current) fileInputRef.current.value = ''
       setEditingId(null)
       setActiveView('categories')
     } catch (error) {
@@ -87,10 +62,6 @@ function AdminCategories() {
   const handleEdit = (category) => {
     setEditingId(category.id)
     setName(category.name)
-    setImageUrl(category.image_url || '')
-    setSelectedImage(null)
-    setIsSelectedImageUploaded(false)
-    uploadedImageRef.current = null
     setErrorMessage('')
     setActiveView('form')
   }
@@ -98,11 +69,6 @@ function AdminCategories() {
   const cancelEdit = () => {
     setEditingId(null)
     setName('')
-    setImageUrl('')
-    setSelectedImage(null)
-    setIsSelectedImageUploaded(false)
-    uploadedImageRef.current = null
-    if (fileInputRef.current) fileInputRef.current.value = ''
     setActiveView('categories')
   }
 
@@ -110,35 +76,10 @@ function AdminCategories() {
     if (activeView !== 'form' || editingId) {
       setEditingId(null)
       setName('')
-      setImageUrl('')
-      setSelectedImage(null)
-      setIsSelectedImageUploaded(false)
-      uploadedImageRef.current = null
-      if (fileInputRef.current) fileInputRef.current.value = ''
       setErrorMessage('')
     }
     setActiveView('form')
   }
-
-  const handleImageSelection = (event) => {
-    const file = event.target.files?.[0]
-    if (!file) return
-    try {
-      validateProductImageFile(file)
-    } catch (error) {
-      setErrorMessage(error.message)
-      event.target.value = ''
-      return
-    }
-    uploadedImageRef.current = null
-    setIsSelectedImageUploaded(false)
-    setSelectedImage({ file, previewUrl: URL.createObjectURL(file) })
-    setErrorMessage('')
-  }
-
-  useEffect(() => () => {
-    if (selectedImage?.previewUrl) URL.revokeObjectURL(selectedImage.previewUrl)
-  }, [selectedImage])
 
   const handleDelete = async (category) => {
     if (!window.confirm(`Delete "${category.name}"?`)) return
@@ -201,55 +142,6 @@ function AdminCategories() {
               <FormControl isRequired>
                 <FormLabel>Category Name</FormLabel>
                 <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Domestic Water Purifiers" required />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Category Image</FormLabel>
-                <Input
-                  ref={fileInputRef}
-                  className="category-image-file-input"
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp"
-                  aria-label="Choose category image"
-                  onChange={handleImageSelection}
-                />
-                <div className="category-image-upload">
-                  {(selectedImage?.previewUrl || imageUrl) && (
-                    <img
-                      className="category-image-preview"
-                      src={selectedImage?.previewUrl || imageUrl}
-                      alt={`${name || 'Category'} preview`}
-                    />
-                  )}
-                  <div>
-                    <Text fontSize="sm" fontWeight="600" color="gray.700">
-                      {selectedImage ? selectedImage.file.name : (imageUrl ? 'Current category image' : 'No image selected')}
-                    </Text>
-                    <Text fontSize="xs" color="gray.500">
-                      JPEG, PNG, or WebP · Max {Math.round(maxProductImageSize / 1024 / 1024)} MB
-                    </Text>
-                    <Button
-                      type="button"
-                      size="sm"
-                      variant="outline"
-                      mt={2}
-                      isDisabled={isSaving}
-                      onClick={() => fileInputRef.current?.click()}
-                    >
-                      {imageUrl || selectedImage ? 'Replace Image' : 'Upload Category Image'}
-                    </Button>
-                  </div>
-                </div>
-                {isUploadingImage && (
-                  <Box mt={3} role="status" aria-live="polite">
-                    <Text fontSize="xs" color="blue.600" mb={1}>Uploading category image…</Text>
-                    <Progress size="xs" isIndeterminate colorScheme="blue" />
-                  </Box>
-                )}
-                {selectedImage && isSelectedImageUploaded && (
-                  <Text mt={2} fontSize="xs" color="green.600" role="status">
-                    Image uploaded. Save the category to publish it.
-                  </Text>
-                )}
               </FormControl>
               <div className="categories-form-actions">
                 <Button className="categories-submit-button" type="submit" isLoading={isSaving}>

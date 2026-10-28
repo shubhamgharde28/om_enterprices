@@ -27,6 +27,7 @@ export const mockProducts = [
     active: true,
     rating: 4.8,
     image_url: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=900&q=80',
+    spare_part_ids: ['prod-7', 'prod-8'],
   },
   {
     id: 'prod-2',

@@ -211,51 +211,6 @@
   box-shadow: 0 0 0 1px #6ca3e8;
 }
 
-.admin-categories .category-image-file-input {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  clip-path: inset(50%);
-}
-
-.category-image-upload {
-  display: flex;
-  min-width: 0;
-  align-items: center;
-  gap: 14px;
-  padding: 12px;
-  border: 1px dashed #cbd7e5;
-  border-radius: 9px;
-  background: #f8fafd;
-}
-
-.category-image-preview {
-  width: 108px;
-  height: 88px;
-  flex: 0 0 auto;
-  border: 1px solid #e3e9f0;
-  border-radius: 7px;
-  background: #fff;
-  object-fit: contain;
-}
-
-@media (max-width: 480px) {
-  .category-image-upload {
-    align-items: flex-start;
-    gap: 10px;
-    padding: 9px;
-  }
-
-  .category-image-preview {
-    width: 82px;
-    height: 76px;
-  }
-}
-
 .categories-form-actions {
   display: flex;
   flex-direction: column;

@@ -93,9 +93,9 @@ function SolarAboutPage() {
         <Container maxW="1400px" className="solar-about-hero-inner">
           <Box className="solar-about-hero-copy">
             <Text className="solar-eyebrow">About us</Text>
-            <Heading as="h1">Powering a cleaner, brighter tomorrow</Heading>
+            <Heading as="h1">Powering a cleaner, <span className="solar-about-highlight">brighter tomorrow</span></Heading>
             <Text>
-              OM Enterprises, through Sunward Solar, brings reliable and sustainable solar energy solutions to homes, businesses and industries. We are committed to making clean energy simple, accessible and affordable.
+              OM Enterprises brings Tata Power Solar solutions to homes, businesses and industries, with guidance from the first conversation through installation and ongoing care.
             </Text>
             <Box className="solar-about-hero-actions">
               <Button className="solar-about-primary" as={RouterLink} to="/solar/request/consultation" rightIcon={<FaArrowRight />}>
@@ -133,13 +133,13 @@ function SolarAboutPage() {
           <Text className="solar-about-image-caption">Clean Energy<br />for a Sustainable<br />Future</Text>
         </Box>
         <Box className="solar-about-intro-copy">
-          <Text className="solar-eyebrow">About Sunward Solar</Text>
+          <Text className="solar-eyebrow">Tata Solar by OM Enterprises</Text>
           <Heading>A trusted name in solar energy solutions</Heading>
           <Text>
-            Sunward Solar is a dedicated solar services brand by OM Enterprises, focused on providing end-to-end solar solutions for residential, commercial and industrial sectors. We believe in clean energy, long-term value and a greener planet.
+            OM Enterprises helps customers explore Tata Power Solar solutions for residential, commercial and industrial needs. We focus on clear guidance, suitable system planning, professional installation and dependable after-sales support.
           </Text>
           <Text>
-            With the backing of Tata Power Solar, we bring world-class technology, expertise and service to your doorstep.
+            As an authorized channel partner of Tata Power Solar, we help bring its solar products and technology to customers with local guidance and service.
           </Text>
           <Box className="solar-about-partner-strip">
             <Box className="solar-about-partner-logo"><FaBolt /><Text>TATA POWER SOLAR</Text></Box>
@@ -180,9 +180,9 @@ function SolarAboutPage() {
         <Container maxW="1400px" className="solar-about-tata-inner">
           <Box className="solar-about-tata-copy">
             <Text className="solar-eyebrow">Our partnership</Text>
-            <Heading>Tata Power Solar Services</Heading>
+            <Heading>Tata Power Solar, supported by OM Enterprises</Heading>
             <Text>
-              As an authorized channel partner of Tata Power Solar, we offer a complete range of high-performance solar solutions backed by world-class technology and proven reliability.
+              Explore Tata Power Solar products and services through OM Enterprises. Our team can help you understand your options, plan your installation and get support after handover.
             </Text>
             <Box className="solar-about-check-list">
               {[
@@ -193,7 +193,7 @@ function SolarAboutPage() {
               ].map((item) => <Text key={item}><FaCheckCircle />{item}</Text>)}
             </Box>
             <Link as={RouterLink} to="/solar/services" className="solar-about-primary solar-about-link">
-              Explore Tata Solar Products <FaArrowRight />
+              Explore Tata Power Solar solutions <FaArrowRight />
             </Link>
           </Box>
           <Box className="solar-about-tata-image-wrap">

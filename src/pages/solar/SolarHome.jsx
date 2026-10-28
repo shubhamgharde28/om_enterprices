@@ -26,12 +26,12 @@ function SolarHome() {
       >
         <Container maxW="1400px" className="solar-home-hero-content">
           <Box maxW="590px">
-            <Text className="solar-home-badge"><FaLeaf /> Clean energy, a brighter tomorrow</Text>
+            <Text className="solar-home-badge"><FaLeaf /> Tata Solar by OM Enterprises</Text>
             <Heading className="solar-home-title">
-              Make more of the energy above your <span>roof.</span>
+              Power your property with <span>Tata Solar.</span>
             </Heading>
             <Text className="solar-home-intro">
-              Solar solutions designed around your property, your power needs and what comes next.
+              Explore Tata Power Solar solutions from OM Enterprises, with guidance from your first questions through installation and ongoing care.
             </Text>
             <Flex mt={5} gap={3} wrap="wrap">
               <Button className="solar-primary-cta" as={RouterLink} to="/solar/consultation" colorScheme="green" rightIcon={<FaArrowRight />}>
@@ -52,7 +52,7 @@ function SolarHome() {
 
       <Box className="solar-home-practical">
         <Container maxW="1400px" py={{ base: 9, md: 12 }}>
-          <Text className="solar-eyebrow">Solar, made practical</Text>
+          <Text className="solar-eyebrow">Tata Solar by OM Enterprises</Text>
           <Heading className="solar-home-section-title">A better energy plan starts with the right team.</Heading>
           <Text className="solar-home-section-description">
             From your first questions to long-term system care, we make every step clear, considered and tailored to your site.
@@ -73,7 +73,7 @@ function SolarHome() {
       <Box className="solar-home-cta">
         <Container maxW="1400px" className="solar-home-cta-inner">
           <Box className="solar-home-cta-copy" maxW="520px">
-            <Text className="solar-eyebrow">Ready to go solar?</Text>
+            <Text className="solar-eyebrow">Your Tata Solar team at OM Enterprises</Text>
             <Heading>Let’s build a cleaner, brighter tomorrow.</Heading>
             <Text mt={2}>Get a free consultation and a personalised solar plan for your home or business.</Text>
             <Flex className="solar-home-cta-actions" mt={4} gap={3} wrap="wrap">

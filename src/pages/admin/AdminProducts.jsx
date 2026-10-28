@@ -54,16 +54,27 @@ const defaultProduct = {
   slug: '',
   image_url: '',
   additional_image_urls: '',
+  spare_part_ids: [],
   purifier_details: { ...defaultPurifierDetails },
 }
 
-function AdminProducts() {
+function AdminProducts({ initialProductType }) {
   const products = useSelector((state) => state.products.items)
   const categories = useSelector((state) => state.categories.items)
   const dispatch = useDispatch()
-  const [form, setForm] = useState({ ...defaultProduct })
+  const [form, setForm] = useState(() => initialProductType === 'Spare Parts'
+    ? {
+      ...defaultProduct,
+      product_type: 'Spare Parts',
+      capacity: 'N/A',
+      purification_technology: '',
+      suitable_for: '',
+      warranty: '6 months',
+      installation_available: false,
+    }
+    : { ...defaultProduct })
   const [editingId, setEditingId] = useState(null)
-  const [activeView, setActiveView] = useState('products')
+  const [activeView, setActiveView] = useState(initialProductType === 'Spare Parts' ? 'form' : 'products')
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const [selectedImages, setSelectedImages] = useState([])
@@ -79,6 +90,29 @@ function AdminProducts() {
     installation: true,
   })
   const toast = useToast()
+  const isSparePartsView = initialProductType === 'Spare Parts'
+  const visibleProducts = isSparePartsView
+    ? products.filter((product) => product.product_type === 'Spare Parts')
+    : products
+
+  useEffect(() => {
+    if (initialProductType === 'Spare Parts') {
+      setEditingId(null)
+      setForm({
+        ...defaultProduct,
+        product_type: 'Spare Parts',
+        capacity: 'N/A',
+        purification_technology: '',
+        suitable_for: '',
+        warranty: '6 months',
+        installation_available: false,
+        purifier_details: { ...defaultPurifierDetails },
+      })
+      setActiveView('form')
+    } else {
+      setActiveView('products')
+    }
+  }, [initialProductType])
 
   const updatePurifierDetail = (field, value) => {
     setForm((currentForm) => ({
@@ -89,7 +123,7 @@ function AdminProducts() {
 
   useEffect(() => {
     let active = true
-    Promise.all([fetchProducts(), fetchCategories()])
+    Promise.all([fetchProducts({ includeInactive: true }), fetchCategories()])
       .then(([rows, categoryRows]) => {
         if (active) {
           dispatch(setProducts(rows))
@@ -162,6 +196,7 @@ function AdminProducts() {
         : '',
       image_url: imageUrls[0] || '',
       image_urls: imageUrls,
+      spare_part_ids: form.product_type === 'Spare Parts' ? [] : form.spare_part_ids,
       purifier_details: isWaterPurifier ? {
         ...purifierDetails,
         purification_stages: purifierDetails.purification_stages === '' ? null : Number(purifierDetails.purification_stages),
@@ -171,6 +206,7 @@ function AdminProducts() {
         power_consumption: purifierDetails.power_consumption === '' ? null : Number(purifierDetails.power_consumption),
       } : {},
     }
+    const selectedSpareParts = products.filter((product) => payload.spare_part_ids.includes(product.id))
 
     try {
       if (selectedImages.length) {
@@ -195,11 +231,19 @@ function AdminProducts() {
 
       if (editingId) {
         const savedProduct = await updateProductRecord(editingId, payload)
-        dispatch(updateProduct(savedProduct))
+        dispatch(updateProduct({
+          ...savedProduct,
+          spare_part_ids: payload.spare_part_ids,
+          spare_parts: selectedSpareParts,
+        }))
         toast({ title: 'Product updated', status: 'success', duration: 2500, isClosable: true })
       } else {
         const savedProduct = await createProduct(payload)
-        dispatch(addProduct(savedProduct))
+        dispatch(addProduct({
+          ...savedProduct,
+          spare_part_ids: payload.spare_part_ids,
+          spare_parts: selectedSpareParts,
+        }))
         toast({ title: 'Product saved to Supabase', status: 'success', duration: 2500, isClosable: true })
       }
       setForm({ ...defaultProduct })
@@ -210,7 +254,15 @@ function AdminProducts() {
       if (fileInputRef.current) fileInputRef.current.value = ''
       setActiveView('products')
     } catch (error) {
-      if (error.productUpdated) dispatch(updateProduct(error.productUpdated))
+      if (error.productUpdated) {
+        const existingProduct = products.find((product) => product.id === editingId)
+        const savedSparePartIds = error.productUpdated.spare_part_ids ?? []
+        dispatch(updateProduct({
+          ...existingProduct,
+          ...error.productUpdated,
+          spare_parts: products.filter((product) => savedSparePartIds.includes(product.id)),
+        }))
+      }
       setErrorMessage(error.message || 'Unable to save product.')
     } finally {
       setIsSaving(false)
@@ -228,6 +280,9 @@ function AdminProducts() {
     setForm({
       ...defaultProduct,
       ...product,
+      spare_part_ids: product.spare_part_ids
+        ?? product.spare_parts?.map((sparePart) => sparePart.id)
+        ?? [],
       original_price: product.original_price ?? '',
       image_url: product.image_url ?? '',
       additional_image_urls: (product.image_urls ?? [])
@@ -275,15 +330,24 @@ function AdminProducts() {
   }
 
   const isWaterPurifier = ['Domestic', 'Commercial'].includes(form.product_type)
-  const openAddProductForm = () => {
-    if (activeView !== 'form' || editingId) {
-      setEditingId(null)
-      setForm({ ...defaultProduct, purifier_details: { ...defaultPurifierDetails } })
-      setSelectedImages([])
-      setIsSelectedImageUploaded(false)
-      uploadedImagesRef.current.clear()
-      setErrorMessage('')
-    }
+  const openAddProductForm = (productType = 'Domestic') => {
+    setEditingId(null)
+    setForm({
+      ...defaultProduct,
+      product_type: productType,
+      ...(productType === 'Spare Parts' ? {
+        capacity: 'N/A',
+        purification_technology: '',
+        suitable_for: '',
+        warranty: '6 months',
+        installation_available: false,
+      } : {}),
+      purifier_details: { ...defaultPurifierDetails },
+    })
+    setSelectedImages([])
+    setIsSelectedImageUploaded(false)
+    uploadedImagesRef.current.clear()
+    setErrorMessage('')
     setActiveView('form')
   }
 
@@ -320,7 +384,11 @@ function AdminProducts() {
 
   return (
     <Container className="admin-products" maxW="1500px" px={0}>
-      <nav className="products-view-tabs" role="tablist" aria-label="Product management views">
+      <nav
+        className="products-view-tabs"
+        role="tablist"
+        aria-label={isSparePartsView ? 'Spare part management views' : 'Product management views'}
+      >
         <button
           type="button"
           role="tab"
@@ -329,31 +397,33 @@ function AdminProducts() {
           onClick={() => setActiveView('products')}
         >
           <FaBoxOpen />
-          <span>Products</span>
-          <span className="products-view-count">{products.length}</span>
+          <span>{isSparePartsView ? 'Spare Parts' : 'Products'}</span>
+          <span className="products-view-count">{visibleProducts.length}</span>
         </button>
         <button
           type="button"
           role="tab"
-          aria-selected={activeView === 'form'}
-          className={`products-view-tab${activeView === 'form' ? ' is-active' : ''}`}
-          onClick={openAddProductForm}
+          aria-selected={activeView === 'form' && form.product_type !== 'Spare Parts'}
+          className={`products-view-tab${activeView === 'form' && form.product_type !== 'Spare Parts' ? ' is-active' : ''}`}
+          onClick={() => openAddProductForm(isSparePartsView ? 'Spare Parts' : 'Domestic')}
         >
           <FaPlus />
-          <span>Add Product</span>
+          <span>{isSparePartsView ? 'Add Spare Part' : 'Add Product'}</span>
         </button>
       </nav>
 
       {activeView === 'form' ? (
         <section className="products-form-view" role="tabpanel">
           <div className="products-breadcrumbs">
-            <button type="button" onClick={() => setActiveView('products')}>Products</button>
+            <button type="button" onClick={() => setActiveView('products')}>
+              {isSparePartsView ? 'Spare Parts' : 'Products'}
+            </button>
             <span aria-hidden="true">›</span>
-            <strong>{editingId ? 'Edit Product' : 'Add Product'}</strong>
+            <strong>{editingId ? 'Edit Product' : form.product_type === 'Spare Parts' ? 'Add Spare Part' : 'Add Product'}</strong>
           </div>
           <header className="products-heading">
-            <h1>{editingId ? 'Edit Product' : 'Add Product'}</h1>
-            <p>{editingId ? 'Update the product details in your store.' : 'Fill in the details below to add a new product to your store.'}</p>
+            <h1>{editingId ? 'Edit Product' : form.product_type === 'Spare Parts' ? 'Add Spare Part' : 'Add Product'}</h1>
+            <p>{editingId ? 'Update the product details in your store.' : form.product_type === 'Spare Parts' ? 'Add a replacement part to your store catalog.' : 'Fill in the details below to add a new product to your store.'}</p>
           </header>
 
           {errorMessage && <Box className="products-error" role="alert">{errorMessage}</Box>}
@@ -369,13 +439,15 @@ function AdminProducts() {
               <FormLabel>Product Name</FormLabel>
               <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="e.g. Kent Supreme Plus" required />
             </FormControl>
-            <FormControl isRequired>
-              <FormLabel>Category</FormLabel>
-              <Select value={form.category_id || ''} onChange={(e) => setForm({ ...form, category_id: e.target.value })}>
-                <option value="">No category</option>
-                {categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}
-              </Select>
-            </FormControl>
+            {form.product_type !== 'Spare Parts' && (
+              <FormControl isRequired>
+                <FormLabel>Category</FormLabel>
+                <Select value={form.category_id || ''} onChange={(e) => setForm({ ...form, category_id: e.target.value })}>
+                  <option value="">No category</option>
+                  {categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}
+                </Select>
+              </FormControl>
+            )}
             <FormControl isRequired>
               <FormLabel>Price</FormLabel>
               <Input type="number" min="0" step="0.01" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} placeholder="₹ 0" required />
@@ -384,10 +456,12 @@ function AdminProducts() {
               <FormLabel>Original Price</FormLabel>
               <Input type="number" min="0" step="0.01" value={form.original_price} onChange={(e) => setForm({ ...form, original_price: e.target.value })} placeholder="₹ 0" />
             </FormControl>
-            <FormControl isRequired>
-              <FormLabel>Stock</FormLabel>
-              <Input type="number" min="0" step="1" value={form.stock} onChange={(e) => setForm({ ...form, stock: e.target.value })} placeholder="0" required />
-            </FormControl>
+            {form.product_type !== 'Spare Parts' && (
+              <FormControl isRequired>
+                <FormLabel>Stock</FormLabel>
+                <Input type="number" min="0" step="1" value={form.stock} onChange={(e) => setForm({ ...form, stock: e.target.value })} placeholder="0" required />
+              </FormControl>
+            )}
             <FormControl isRequired>
               <FormLabel>Product Type</FormLabel>
               <Select value={form.product_type} onChange={(e) => setForm({ ...form, product_type: e.target.value })}>
@@ -401,12 +475,46 @@ function AdminProducts() {
               <FormLabel>Short Description</FormLabel>
               <Textarea value={form.short_description} onChange={(e) => setForm({ ...form, short_description: e.target.value })} placeholder="Enter a short description..." rows={2} />
             </FormControl>
-            <FormControl className="product-field-wide">
-              <FormLabel>Description</FormLabel>
-              <Textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder="Add product details..." rows={3} />
-            </FormControl>
+            {form.product_type !== 'Spare Parts' && (
+              <FormControl className="product-field-wide">
+                <FormLabel>Description</FormLabel>
+                <Textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder="Add product details..." rows={3} />
+              </FormControl>
+            )}
           </Grid>
         </details>
+
+        {form.product_type !== 'Spare Parts' && (
+          <details className="product-form-section" open>
+            <summary className="product-section-summary">
+              <span className="product-section-title"><FaTools /> Compatible Spare Parts</span>
+              <FaChevronDown className="product-section-chevron" />
+            </summary>
+            <div className="product-section-grid">
+              <FormControl>
+                <FormLabel>Select spare parts for this product</FormLabel>
+                {products.some((product) => product.product_type === 'Spare Parts' && product.id !== editingId) ? (
+                  <CheckboxGroup
+                    value={form.spare_part_ids || []}
+                    onChange={(values) => setForm((current) => ({ ...current, spare_part_ids: values }))}
+                  >
+                    <Stack spacing={2}>
+                      {products
+                        .filter((product) => product.product_type === 'Spare Parts' && product.id !== editingId)
+                        .map((sparePart) => (
+                          <Checkbox key={sparePart.id} value={sparePart.id} isDisabled={isSaving}>
+                            {sparePart.name} · ₹{Number(sparePart.price || 0).toLocaleString('en-IN')}
+                          </Checkbox>
+                        ))}
+                    </Stack>
+                  </CheckboxGroup>
+                ) : (
+                  <Text fontSize="sm" color="gray.500">Add a product with type “Spare Parts” first.</Text>
+                )}
+              </FormControl>
+            </div>
+          </details>
+        )}
 
         {isWaterPurifier && (
           <details className="product-form-section" open={openSections.specifications} onToggle={(event) => toggleSection('specifications', event.currentTarget.open)}>
@@ -581,7 +689,7 @@ function AdminProducts() {
         <div className="products-form-actions">
           <Button className="product-submit-button" type="submit" isLoading={isSaving}>
             <FaImages />
-            {editingId ? 'Save Changes' : 'Add Product'}
+            {editingId ? 'Save Changes' : form.product_type === 'Spare Parts' ? 'Add Spare Part' : 'Add Product'}
           </Button>
           {editingId && <Button className="product-cancel-button" type="button" variant="ghost" onClick={cancelProductEdit}>Cancel Edit</Button>}
         </div>
@@ -593,18 +701,18 @@ function AdminProducts() {
       <Box className="products-preview">
         <div className="products-preview-heading">
           <div>
-            <h2>Product Details (Preview)</h2>
-            <p>Manage the products available in your store.</p>
+            <h2>{isSparePartsView ? 'Spare Parts' : 'Product Details (Preview)'}</h2>
+            <p>{isSparePartsView ? 'Manage replacement parts available in your store.' : 'Manage the products available in your store.'}</p>
           </div>
-          <span>{products.length} products</span>
+          <span>{visibleProducts.length} {isSparePartsView ? 'spare parts' : 'products'}</span>
         </div>
         <div className="products-table-scroll">
           <Table className="products-table" size="sm">
             <Thead>
-              <Tr><Th>Name</Th><Th>Type</Th><Th>Price</Th><Th>Featured</Th><Th>Actions</Th></Tr>
+              <Tr><Th>Name</Th><Th>{isSparePartsView ? 'Part Type' : 'Type'}</Th><Th>Price</Th><Th>Featured</Th><Th>Actions</Th></Tr>
             </Thead>
             <Tbody>
-              {!isLoading && products.map((product) => (
+              {!isLoading && visibleProducts.map((product) => (
                 <Tr key={product.id}>
                   <Td>{product.name}</Td>
                   <Td>{product.product_type}</Td>
@@ -616,7 +724,7 @@ function AdminProducts() {
                       <Button size="xs" onClick={async () => {
                         try {
                           const saved = await updateProductRecord(product.id, { ...product, featured: !product.featured })
-                          dispatch(updateProduct(saved))
+                          dispatch(updateProduct({ ...product, ...saved }))
                         } catch (error) {
                           setErrorMessage(error.message || 'Unable to update product.')
                         }
@@ -627,7 +735,9 @@ function AdminProducts() {
                 </Tr>
               ))}
               {isLoading && <Tr><Td colSpan={5}>Loading products…</Td></Tr>}
-              {!isLoading && products.length === 0 && <Tr><Td colSpan={5}>No products saved yet.</Td></Tr>}
+              {!isLoading && visibleProducts.length === 0 && (
+                <Tr><Td colSpan={5}>{isSparePartsView ? 'No spare parts saved yet.' : 'No products saved yet.'}</Td></Tr>
+              )}
             </Tbody>
           </Table>
         </div>

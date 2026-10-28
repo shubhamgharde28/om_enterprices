@@ -27,7 +27,17 @@ create table if not exists public.profiles (
 );
 
 alter table public.profiles
-  add column if not exists email text not null default '';
+  add column if not exists full_name text not null default '',
+  add column if not exists email text not null default '',
+  add column if not exists phone text not null default '',
+  add column if not exists address text not null default '',
+  add column if not exists city text not null default '',
+  add column if not exists pincode text not null default '',
+  add column if not exists role text not null default 'customer'
+    check (role in ('customer', 'staff', 'admin')),
+  add column if not exists active boolean not null default true,
+  add column if not exists created_at timestamptz not null default now(),
+  add column if not exists updated_at timestamptz not null default now();
 
 create or replace function public.create_profile_for_new_user()
 returns trigger
@@ -117,6 +127,15 @@ create table if not exists public.product_images (
   display_order integer not null default 0,
   is_primary boolean not null default false,
   created_at timestamptz not null default now()
+);
+
+create table if not exists public.product_spare_parts (
+  product_id uuid not null references public.products(id) on delete cascade,
+  spare_part_id uuid not null references public.products(id) on delete cascade,
+  display_order integer not null default 0,
+  created_at timestamptz not null default now(),
+  primary key (product_id, spare_part_id),
+  check (product_id <> spare_part_id)
 );
 
 create table if not exists public.services (
@@ -290,6 +309,7 @@ $$;
 
 create index if not exists products_category_id_idx on public.products(category_id);
 create index if not exists product_images_product_order_idx on public.product_images(product_id, display_order);
+create index if not exists product_spare_parts_spare_part_id_idx on public.product_spare_parts(spare_part_id);
 create index if not exists service_bookings_user_created_idx on public.service_bookings(user_id, created_at desc);
 create index if not exists service_bookings_status_idx on public.service_bookings(status);
 create index if not exists service_bookings_service_id_idx on public.service_bookings(service_id);
@@ -340,8 +360,67 @@ $$;
 
 grant execute on function public.has_admin_role() to anon, authenticated;
 
+create or replace function public.set_product_spare_parts(
+  p_product_id uuid,
+  p_spare_part_ids uuid[]
+)
+returns void
+language plpgsql
+security invoker
+set search_path = ''
+as $$
+begin
+  if not (select public.has_admin_role()) then
+    raise exception 'Administrator access is required to manage product spare parts.';
+  end if;
+
+  if not exists (select 1 from public.products where id = p_product_id) then
+    raise exception 'The product does not exist.';
+  end if;
+
+  if cardinality(coalesce(p_spare_part_ids, '{}'::uuid[])) > 0
+    and exists (
+      select 1 from public.products
+      where id = p_product_id and product_type = 'Spare Parts'
+    ) then
+    raise exception 'Spare Parts products cannot have linked spare parts.';
+  end if;
+
+  if p_product_id = any(coalesce(p_spare_part_ids, '{}'::uuid[])) then
+    raise exception 'A product cannot be its own spare part.';
+  end if;
+
+  if exists (
+    select 1
+    from unnest(coalesce(p_spare_part_ids, '{}'::uuid[])) as selected(spare_part_id)
+    left join public.products as spare_part on spare_part.id = selected.spare_part_id
+    where spare_part.id is null or spare_part.product_type <> 'Spare Parts'
+  ) then
+    raise exception 'Every linked item must be an existing Spare Parts product.';
+  end if;
+
+  if exists (
+    select 1
+    from unnest(coalesce(p_spare_part_ids, '{}'::uuid[])) as selected(spare_part_id)
+    group by selected.spare_part_id
+    having count(*) > 1
+  ) then
+    raise exception 'A spare part cannot be linked more than once.';
+  end if;
+
+  delete from public.product_spare_parts where product_id = p_product_id;
+  insert into public.product_spare_parts (product_id, spare_part_id, display_order)
+  select p_product_id, selected.spare_part_id, selected.ordinality::integer - 1
+  from unnest(coalesce(p_spare_part_ids, '{}'::uuid[]))
+    with ordinality as selected(spare_part_id, ordinality);
+end;
+$$;
+
+revoke all on function public.set_product_spare_parts(uuid, uuid[]) from public, anon;
+grant execute on function public.set_product_spare_parts(uuid, uuid[]) to authenticated;
+
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
-values ('product-images', 'product-images', true, 5242880, array['image/jpeg', 'image/png', 'image/webp'])
+values ('product', 'product', true, 5242880, array['image/jpeg', 'image/png', 'image/webp'])
 on conflict (id) do update
 set
   public = excluded.public,
@@ -352,6 +431,7 @@ alter table public.profiles enable row level security;
 alter table public.categories enable row level security;
 alter table public.products enable row level security;
 alter table public.product_images enable row level security;
+alter table public.product_spare_parts enable row level security;
 alter table public.services enable row level security;
 alter table public.technicians enable row level security;
 alter table public.service_bookings enable row level security;
@@ -408,22 +488,42 @@ create policy "Admins manage product images" on public.product_images
   for all to authenticated using ((select public.has_admin_role()))
   with check ((select public.has_admin_role()));
 
+drop policy if exists "Public read spare parts of active products" on public.product_spare_parts;
+create policy "Public read spare parts of active products" on public.product_spare_parts
+  for select to anon, authenticated
+  using (
+    exists (
+      select 1 from public.products as product
+      where product.id = product_spare_parts.product_id and product.active = true
+    )
+    and exists (
+      select 1 from public.products as spare_part
+      where spare_part.id = product_spare_parts.spare_part_id
+        and spare_part.active = true
+        and spare_part.product_type = 'Spare Parts'
+    )
+  );
+drop policy if exists "Admins manage product spare parts" on public.product_spare_parts;
+create policy "Admins manage product spare parts" on public.product_spare_parts
+  for all to authenticated using ((select public.has_admin_role()))
+  with check ((select public.has_admin_role()));
+
 drop policy if exists "Public read product image files" on storage.objects;
 create policy "Public read product image files" on storage.objects
-  for select to anon, authenticated using (bucket_id = 'product-images');
+  for select to anon, authenticated using (bucket_id = 'product');
 drop policy if exists "Admins upload product image files" on storage.objects;
 create policy "Admins upload product image files" on storage.objects
   for insert to authenticated
-  with check (bucket_id = 'product-images' and (select public.has_admin_role()));
+  with check (bucket_id = 'product' and (select public.has_admin_role()));
 drop policy if exists "Admins update product image files" on storage.objects;
 create policy "Admins update product image files" on storage.objects
   for update to authenticated
-  using (bucket_id = 'product-images' and (select public.has_admin_role()))
-  with check (bucket_id = 'product-images' and (select public.has_admin_role()));
+  using (bucket_id = 'product' and (select public.has_admin_role()))
+  with check (bucket_id = 'product' and (select public.has_admin_role()));
 drop policy if exists "Admins delete product image files" on storage.objects;
 create policy "Admins delete product image files" on storage.objects
   for delete to authenticated
-  using (bucket_id = 'product-images' and (select public.has_admin_role()));
+  using (bucket_id = 'product' and (select public.has_admin_role()));
 
 drop policy if exists "Public read active services" on public.services;
 create policy "Public read active services" on public.services
@@ -569,10 +669,10 @@ create policy "Admins manage solar requests" on public.solar_requests
   with check ((select public.has_admin_role()));
 
 grant select on public.categories, public.products, public.product_images,
-  public.services, public.testimonials, public.website_content
+  public.product_spare_parts, public.services, public.testimonials, public.website_content
   to anon, authenticated;
 grant select, insert, update, delete on public.profiles, public.categories,
-  public.products, public.product_images, public.services, public.technicians,
+  public.products, public.product_images, public.product_spare_parts, public.services, public.technicians,
   public.service_bookings, public.testimonials, public.website_content,
   public.contact_messages, public.product_enquiries, public.solar_requests
   to authenticated;

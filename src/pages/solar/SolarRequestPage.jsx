@@ -10,7 +10,7 @@ const requestTypes = {
   installation: { label: 'Solar Installation Quote', service: 'Solar installation quote', intro: 'Share a few details about your property so our team can prepare for an installation discussion.' },
   servicing: { label: 'Solar Servicing', service: 'Solar panel servicing', intro: 'Request cleaning, routine maintenance or help caring for your existing solar system.' },
   inspection: { label: 'Solar Inspection', service: 'Solar system inspection and repair', intro: 'Tell us what your system is doing and request an inspection from our service team.' },
-  contact: { label: 'Contact the Solar Team', service: 'General solar enquiry', intro: 'Send a question to our solar team and we’ll get back to you.' },
+  contact: { label: 'Contact Tata Solar by OM Enterprises', service: 'General solar enquiry', intro: 'Share your solar goals, questions or project details and our OM Enterprises team will guide you through Tata Power Solar options.' },
 }
 
 const emptyForm = {
@@ -200,7 +200,9 @@ function SolarRequestPage({ initialType, className = '' }) {
           <Container maxW="1400px" className="solar-consultation-hero-inner">
             <Box className="solar-consultation-hero-copy">
               <Text className="solar-eyebrow">Solar consultation</Text>
-              <Heading>Request a Solar Consultation</Heading>
+              <Heading>
+                Request a <span className="solar-consultation-highlight">Solar Consultation</span>
+              </Heading>
               <Text>Get expert advice from our solar specialists. Fill in the form below and we’ll get back to you with the best solution for your needs.</Text>
               <SimpleGrid className="solar-consultation-highlights" columns={3} spacing={3}>
                 {consultationHighlights.map(([Icon, title, detail]) => (
@@ -213,22 +215,6 @@ function SolarRequestPage({ initialType, className = '' }) {
                   </Box>
                 ))}
               </SimpleGrid>
-            </Box>
-            <Box className="solar-consultation-support-card">
-              <Heading size="sm">Need Help?</Heading>
-              <Text className="solar-consultation-support-intro">Our team is here to assist you with any solar related queries.</Text>
-              <Box className="solar-consultation-support-item">
-                <Box className="solar-consultation-support-icon"><FaEnvelope /></Box>
-                <Box><Text>Email Us</Text><Text>solar@omenterprises.com (placeholder)</Text><Text>We reply within 24 hours</Text></Box>
-              </Box>
-              <Box className="solar-consultation-support-item">
-                <Box className="solar-consultation-support-icon"><FaPhoneAlt /></Box>
-                <Box><Text>Call Us</Text><Text>09724916029</Text><Text>Mon - Sun, 9:00 AM - 6:00 PM</Text></Box>
-              </Box>
-              <Box className="solar-consultation-support-item">
-                <Box className="solar-consultation-support-icon"><FaHeadphones /></Box>
-                <Box><Text>Live Chat</Text><Text>Chat with our team</Text><Text>Available 9 AM - 6 PM</Text></Box>
-              </Box>
             </Box>
             <Box className="solar-consultation-hero-image" role="img" aria-label="Home with rooftop solar panels" />
           </Container>
@@ -270,7 +256,7 @@ function SolarRequestPage({ initialType, className = '' }) {
     <Container maxW="1000px" py={{ base: 8, md: 14 }} className={className}>
       <Box className={`solar-card solar-request-card${type === 'contact' ? ' solar-contact-request' : ''}`} p={{ base: 5, md: 9 }}>
         <Text className="solar-eyebrow">{type === 'contact' ? 'Get in touch' : 'Start your solar journey'}</Text>
-        <Heading size={{ base: 'xl', md: '2xl' }} mt={2}>{request.label}</Heading>
+        <Heading mt={2} fontSize={{ base: '20px', md: '23px' }}>{request.label}</Heading>
         <Text color="var(--solar-muted)" mt={3} mb={7}>{request.intro}</Text>
         {formContent}
       </Box>

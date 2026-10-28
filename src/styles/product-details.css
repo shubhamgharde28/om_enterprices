@@ -315,3 +315,120 @@
   }
   .pd-view-more .is-flipped { transform: rotate(180deg); }
 }
+
+.pd-related-spare-parts {
+  margin-top: 32px;
+  padding: 24px;
+  border: 1px solid var(--pd-border);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 8px 28px rgba(10, 60, 120, 0.05);
+}
+
+.pd-related-spare-parts-heading p {
+  margin: 0 0 5px;
+  color: var(--pd-blue);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pd-related-spare-parts-heading h2 {
+  margin: 0;
+  color: var(--pd-navy);
+  font-size: 22px;
+}
+
+.pd-related-spare-parts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.pd-related-spare-part {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: 88px minmax(0, 1fr);
+  gap: 12px;
+  padding: 10px;
+  border: 1px solid var(--pd-border);
+  border-radius: 10px;
+  background: #f8fbfe;
+  text-decoration: none;
+}
+
+.pd-related-spare-part img {
+  width: 88px;
+  height: 88px;
+  border-radius: 7px;
+  background: #fff;
+  object-fit: contain;
+}
+
+.pd-related-spare-part > div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.pd-related-spare-part strong {
+  color: var(--pd-navy);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.pd-related-spare-part span {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--pd-text);
+  font-size: 10px;
+  line-height: 1.4;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.pd-related-spare-part b {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: auto;
+  color: var(--pd-blue);
+  font-size: 12px;
+}
+
+@media (max-width: 1000px) {
+  .pd-related-spare-parts-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .pd-related-spare-parts {
+    margin-top: 14px;
+    padding: 16px;
+    border-radius: 10px;
+  }
+
+  .pd-related-spare-parts-heading h2 {
+    font-size: 15px;
+  }
+
+  .pd-related-spare-parts-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .pd-related-spare-part {
+    grid-template-columns: 72px minmax(0, 1fr);
+  }
+
+  .pd-related-spare-part img {
+    width: 72px;
+    height: 72px;
+  }
+}

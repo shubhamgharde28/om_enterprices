@@ -53,9 +53,11 @@ function SolarContactPage() {
         <Container maxW="1400px" className="solar-contact-hero-inner">
           <Box className="solar-contact-hero-copy">
             <Text className="solar-eyebrow">Get in touch</Text>
-            <Heading>Contact the Solar Team</Heading>
+            <Heading>
+              Contact <Box as="span" color="#13a45a">Tata Solar by OM Enterprises</Box>
+            </Heading>
             <Text>
-              Have a question, need a quote or want to discuss your solar project? We’re here to help. Reach out to our team and we’ll get back to you as soon as possible.
+              Have a question, need a quote or want to discuss Tata Power Solar for your property? The OM Enterprises team is here to help you explore your options and next steps.
             </Text>
             <SimpleGrid className="solar-contact-hero-highlights" columns={3} spacing={3}>
               <Box><FaLeaf /><Text>Expert Guidance</Text><Text>Get professional advice</Text></Box>
@@ -64,25 +66,6 @@ function SolarContactPage() {
             </SimpleGrid>
           </Box>
           <Box className="solar-contact-hero-image" role="img" aria-label="Home powered by rooftop solar panels" />
-          <Box className="solar-contact-service-card">
-            <Box className="solar-contact-service-icon"><FaMapMarkerAlt /></Box>
-            <Box>
-              <Text className="solar-contact-service-label">Service area</Text>
-              <Text className="solar-contact-service-value">Bhandara and surrounding communities; confirm project availability with our team.</Text>
-            </Box>
-            <Box className="solar-contact-service-divider" />
-            <Box className="solar-contact-service-icon"><FaEnvelope /></Box>
-            <Box>
-              <Text className="solar-contact-service-label">Email</Text>
-              <Text className="solar-contact-service-value">solar@omenterprises.com (placeholder)</Text>
-            </Box>
-            <Box className="solar-contact-service-divider" />
-            <Box className="solar-contact-service-icon"><FaPhoneAlt /></Box>
-            <Box>
-              <Text className="solar-contact-service-label">Phone</Text>
-              <Text className="solar-contact-service-value">09724916029</Text>
-            </Box>
-          </Box>
           <Text className="solar-contact-hero-script">Powering<br />a cleaner,<br />greener future</Text>
         </Container>
       </Box>

@@ -85,17 +85,20 @@ export const subscribeToProductEnquiryChanges = (onChange) => {
   }
 }
 
-export const fetchProducts = async () => {
+export const fetchProducts = async ({ includeInactive = false } = {}) => {
   if (!isSupabaseEnabled) return mockProducts
 
-  const { data, error } = await supabase
+  let query = supabase
     .from('products')
-    .select('*, product_images(image_url, alt_text, display_order, is_primary)')
-    .eq('active', true)
+    .select('*, product_images(image_url, alt_text, display_order, is_primary), product_spare_parts!product_spare_parts_product_id_fkey(spare_part_id, display_order, spare_part:products!product_spare_parts_spare_part_id_fkey(id, name, slug, image_url, price, short_description, product_type, active))')
     .order('created_at', { ascending: false })
+  if (!includeInactive) query = query.eq('active', true)
+  const { data, error } = await query
   if (error) throw error
   return (data ?? []).map((product) => {
     const images = [...(product.product_images ?? [])]
+      .sort((first, second) => first.display_order - second.display_order)
+    const sparePartRelations = [...(product.product_spare_parts ?? [])]
       .sort((first, second) => first.display_order - second.display_order)
     const image_urls = images.map((image) => image.image_url).filter(Boolean)
     const primaryImageUrl = images.find((image) => image.is_primary)?.image_url
@@ -108,6 +111,10 @@ export const fetchProducts = async () => {
       image_urls: product.image_url && !image_urls.includes(product.image_url)
         ? [product.image_url, ...image_urls]
         : image_urls,
+      spare_part_ids: sparePartRelations.map((relation) => relation.spare_part_id),
+      spare_parts: sparePartRelations
+        .map((relation) => relation.spare_part)
+        .filter((sparePart) => sparePart?.active),
     }
   })
 }
@@ -154,12 +161,20 @@ const serializeProduct = (product) =>
     }),
   )
 
+const saveProductSpareParts = async (productId, sparePartIds = []) => {
+  const { error } = await supabase.rpc('set_product_spare_parts', {
+    p_product_id: productId,
+    p_spare_part_ids: sparePartIds,
+  })
+  if (error) throw error
+}
+
 const getProductImageUrls = (product) =>
   [...new Set((product.image_urls?.length ? product.image_urls : [product.image_url])
     .map((url) => url?.trim())
     .filter(Boolean))]
 
-const productImageBucket = 'product-images'
+const productImageBucket = 'product'
 export const maxProductImageSize = 5 * 1024 * 1024
 
 export const validateProductImageFile = (file) => {
@@ -303,6 +318,16 @@ export const createProduct = async (product) => {
 
   if (error) throw error
 
+  try {
+    await saveProductSpareParts(data.id, product.spare_part_ids)
+  } catch (sparePartsError) {
+    const { error: rollbackError } = await supabase.from('products').delete().eq('id', data.id)
+    if (rollbackError) {
+      throw new Error(`The product was created, but its spare parts could not be saved (${sparePartsError.message}); automatic cleanup also failed (${rollbackError.message}).`)
+    }
+    throw new Error(`Unable to save compatible spare parts: ${sparePartsError.message}`)
+  }
+
   if (image_urls.length) {
     const { error: imageError } = await supabase
       .from('product_images')
@@ -329,12 +354,19 @@ export const createProduct = async (product) => {
 export const updateProductRecord = async (id, product) => {
   if (!supabase) throw new Error('Supabase is not configured. Check the VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY settings.')
 
-  const [{ data: previousProduct, error: previousProductError }, { data: previousImages, error: previousImagesError }] = await Promise.all([
+  const [
+    { data: previousProduct, error: previousProductError },
+    { data: previousImages, error: previousImagesError },
+    { data: previousSpareParts, error: previousSparePartsError },
+  ] = await Promise.all([
     supabase.from('products').select('image_url').eq('id', id).single(),
     supabase.from('product_images').select('image_url').eq('product_id', id),
+    supabase.from('product_spare_parts').select('spare_part_id').eq('product_id', id),
   ])
   if (previousProductError) throw previousProductError
   if (previousImagesError) throw previousImagesError
+  if (previousSparePartsError) throw previousSparePartsError
+  const previousSparePartIds = (previousSpareParts ?? []).map((relation) => relation.spare_part_id)
 
   const previousImagePaths = [...new Set([
     previousProduct.image_url,
@@ -348,6 +380,19 @@ export const updateProductRecord = async (id, product) => {
   fields.category_id = await resolveCategoryId(product.category_id, product.product_type)
   const { data, error } = await supabase.from('products').update(fields).eq('id', id).select().single()
   if (error) throw error
+
+  try {
+    await saveProductSpareParts(id, product.spare_part_ids)
+  } catch (sparePartsError) {
+    const errorWithProduct = new Error(`Product updated, but compatible spare parts could not be saved: ${sparePartsError.message}`)
+    errorWithProduct.productUpdated = {
+      ...data,
+      image_url,
+      image_urls,
+      spare_part_ids: previousSparePartIds,
+    }
+    throw errorWithProduct
+  }
 
   const { error: deleteError } = await supabase.from('product_images').delete().eq('product_id', id)
   if (deleteError) throw deleteError
@@ -363,7 +408,12 @@ export const updateProductRecord = async (id, product) => {
     if (imageError) throw imageError
   }
 
-  const updatedProduct = { ...data, image_url, image_urls }
+  const updatedProduct = {
+    ...data,
+    image_url,
+    image_urls,
+    spare_part_ids: product.spare_part_ids ?? [],
+  }
   try {
     await deleteUnusedProductImageFiles(replacedImagePaths)
   } catch (error) {
@@ -524,7 +574,7 @@ export const createCategory = async (category) => {
   const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
   const { data, error } = await supabase
     .from('categories')
-    .insert({ name, slug, image_url: category.image_url?.trim() || '', active: true })
+    .insert({ name, slug, active: true })
     .select()
     .single()
 
@@ -539,7 +589,7 @@ export const updateCategoryRecord = async (id, category) => {
   const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
   const { data, error } = await supabase
     .from('categories')
-    .update({ name, slug, image_url: category.image_url?.trim() || '' })
+    .update({ name, slug })
     .eq('id', id)
     .select()
     .single()

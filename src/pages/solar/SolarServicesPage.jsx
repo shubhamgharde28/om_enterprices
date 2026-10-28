@@ -23,9 +23,11 @@ function SolarServicesPage() {
         <Container maxW="1400px" className="solar-services-hero-inner">
           <Box className="solar-services-hero-copy">
             <Text className="solar-eyebrow">Solar solutions</Text>
-            <Heading>Solutions for every stage of solar</Heading>
+            <Heading className="solar-services-hero-title">
+              Solutions for every <span>stage of solar</span>
+            </Heading>
             <Text>
-              From your first questions to installation and long-term care, find solar services shaped around your property, energy use and plans.
+              Explore Tata Power Solar solutions from OM Enterprises, with services shaped around your property, energy use and plans—from your first questions to installation and long-term care.
             </Text>
             <SimpleGrid className="solar-services-hero-highlights" columns={3} spacing={3}>
               {solutionHighlights.map(([Icon, title, description]) => (

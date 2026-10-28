@@ -101,6 +101,7 @@ function AppRoutes() {
         <Route element={<AdminLayout />}>
           <Route path="/admin" element={<Dashboard />} />
           <Route path="/admin/products" element={<AdminProducts />} />
+          <Route path="/admin/spare-parts" element={<AdminProducts initialProductType="Spare Parts" />} />
           <Route path="/admin/categories" element={<AdminCategories />} />
           <Route path="/admin/services" element={<AdminServices />} />
           <Route path="/admin/technicians" element={<AdminTechnicians />} />

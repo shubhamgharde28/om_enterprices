@@ -71,8 +71,9 @@ function WebsiteChooser({ overlay = false, onChoose }) {
                 mb={{ base: 8, md: 8 }}
               />
               <Text
+                className="website-chooser-eyebrow"
                 color="landing.gold"
-                fontSize="xs"
+                fontSize={{ base: '12px', sm: '12px' }}
                 letterSpacing={{ base: '0.13em', sm: '0.16em' }}
                 textTransform="uppercase"
                 mb={2}
@@ -80,8 +81,9 @@ function WebsiteChooser({ overlay = false, onChoose }) {
                 Quality solutions for a brighter tomorrow
               </Text>
               <Heading
+                className="website-chooser-title"
                 as="h1"
-                fontSize={{ base: '2xl', sm: '3xl', tablet: '4xl', xl: '5xl' }}
+                fontSize={{ base: '23px', sm: '23px', tablet: '23px', xl: '23px' }}
                 fontFamily="display"
                 fontWeight="medium"
                 lineHeight={{ base: '1.08', tablet: '0.98' }}
@@ -90,7 +92,7 @@ function WebsiteChooser({ overlay = false, onChoose }) {
               >
                 What can we help you with?
               </Heading>
-              <Text maxW="420px" fontSize="sm" color="landing.muted" lineHeight="tall">
+              <Text className="website-chooser-copy" maxW="420px" fontSize={{ base: '12px', sm: '12px' }} color="landing.muted" lineHeight="tall">
                 Choose a service experience. You can switch between them whenever you like.
               </Text>
             </VStack>
@@ -122,14 +124,14 @@ function WebsiteChooser({ overlay = false, onChoose }) {
                 <Box p={{ base: 5, md: 5 }}>
                   <Flex align="center" gap={3} mb={2}>
                     <Box w="5" h="1px" bg="landing.gold" flexShrink={0} />
-                    <Heading as="h2" fontSize="xl" fontFamily="display" fontWeight="semibold">
+                    <Heading className="website-chooser-card-title" as="h2" fontSize={{ base: '14px', sm: '14px' }} fontFamily="display" fontWeight="semibold">
                       {choice.title}
                     </Heading>
                   </Flex>
-                  <Text color="landing.muted" fontSize="sm" lineHeight="tall" mb={4}>
+                  <Text className="website-chooser-card-copy" color="landing.muted" fontSize={{ base: '12px', sm: '12px' }} lineHeight="tall" mb={4}>
                     {choice.description}
                   </Text>
-                  <Flex align="center" gap={3} color="landing.foreground" fontSize="sm" fontWeight="medium">
+                  <Flex className="website-chooser-card-action" align="center" gap={3} color="landing.foreground" fontSize={{ base: '12px', sm: '12px' }} fontWeight="medium">
                     <Flex
                       align="center"
                       justify="center"
